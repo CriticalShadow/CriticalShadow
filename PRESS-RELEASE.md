@@ -18,19 +18,45 @@ Once the project moves into development, the press release can be used as a touc
  
 ## Heading ##
   > Name the product in a way the reader (i.e. your target customers) will understand.
+Curate
+Map Stamp
+Cartographer
+Routes
+Itinerary
+Location
+Coregraph
+What's Next?
+Take me there
+Point Z
+Been there, done that
+Plat
+Topicgraph
+
+
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
-
+  > Describe who the market for the product is and what benefit they get.
+  One sentence only underneath the title.
+    Allow educators and travelers to tell awesome stories with beautiful maps.
+    
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
-
+  Create unique, curated maps for local experiences to share with friends
+  
 ## Problem ##
   > Describe the problem your product solves.
+  There are times when people lack resources necessary to plan their sightseeing efficiently.
+  Our app intuitively streamlines the process for creating a unique experience to share with
+  anyone.
 
 ## Solution ##
   > Describe how your product elegantly solves the problem.
-
+  {{App Name}} provides an elegant user interface to find points of interest, specify location
+  icons, and categorize their content for other enthusiasts, friends, and tourists. All maps are publicly 
+  available through search or category. 
+  
+  Generators can create, save, and edit maps from a personalized dashboard.
+  
 ## Quote from You ##
   > A quote from a spokesperson in your company.
 
@@ -42,3 +68,12 @@ Once the project moves into development, the press release can be used as a touc
 
 ## Closing and Call to Action ##
   > Wrap it up and give pointers where the reader should go next.
+  
+  
+  
+  
+  
+  
+  
+  
+  
