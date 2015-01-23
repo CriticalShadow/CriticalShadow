@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+
+  <style>
+  #map-canvas {
+    clear: both;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+    height: 400px;
+    background-color: #CCC;
+  }
+  .controls {
+    margin-top: 16px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  #pac-input {
+    background-color: #fff;
+    padding: 0 11px 0 13px;
+    width: 400px;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+  }
+
+  #pac-input:focus {
+    border-color: #4d90fe;
+    margin-left: -1px;
+    padding-left: 14px;  /* Regular padding-left + 1. */
+    width: 401px;
+  }
+
+  .pac-container {
+    font-family: Roboto;
+  }
+
+  #type-selector {
+    color: #fff;
+    background-color: #4d90fe;
+    padding: 5px 11px 0px 11px;
+  }
+
+  #type-selector label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+  }
+  </style>
+  
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  
+  <script>
+
+    var global_lat, global_lon;
+    var geocoder = new google.maps.Geocoder();
+    var map;
+    
+    // Note: need to run a server for geoFindMe()
+    // python -m SimpleHTTPServer
+    function geoFindMe() {
+      if (!navigator.geolocation){
+        alert("Geolocation is not supported by your browse");
+        return;
+      }
+      function success(position) {
+        var latitude  = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        //SET GLOBAL
+        global_lat = latitude;
+        global_lon = longitude;
+
+        console.log('current location: '+global_lat+','+global_lon);
+        initialize();
+      };
+      function error() {
+        alert("Can't find your location. Please adjust settings");
+      };
+
+      navigator.geolocation.getCurrentPosition(success, error);
+    }// geoFindMe()
+     
+
+     
+    function initialize() {
+      //var markerCount = 0;
+      
+      var map_canvas = document.getElementById('map-canvas');
+      var myLatlng = new google.maps.LatLng(global_lat, global_lon);
+      var map_options = {
+        center: myLatlng,
+        zoom: 13, 
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      map = new google.maps.Map(map_canvas, map_options)
+      
+      //************** CLICK LISTENER ****************//
+      google.maps.event.addListener(map, 'click', function (event) {
+          //placeMarker(event.latLng);
+          var latitude = event.latLng.lat();
+          var longitude = event.latLng.lng();
+          console.log(latitude+','+longitude);
+          codeLatLng(latitude+','+longitude);
+
+          var marker = new google.maps.Marker({
+            position: event.latLng,
+            map: map
+          });
+
+      });
+
+    //************** SEARCH BAR FUNCTIONALITY ****************//
+      
+      var input = /** @type {HTMLInputElement} */(
+          document.getElementById('pac-input'));
+      // note: to put search bar inside the map. 
+      // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); 
+
+      var searchBox = new google.maps.places.SearchBox(
+        /** @type {HTMLInputElement} */(input));
+
+      // [START region_getplaces]
+      // Listen for the event fired when the user selects an item from the
+      // pick list. Retrieve the matching places for that item.
+      google.maps.event.addListener(searchBox, 'places_changed', function() {
+        var places = searchBox.getPlaces();
+        //grab input value inside function once address is submit.
+        console.log("PLACES: "+ input.value);
+        if (places.length == 0) {
+          return;
+        }
+
+        for (var i = 0, place; place = places[i]; i++) {
+          // Create a marker for each place.
+          var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location
+          });
+
+        console.log("PLACE.GEOMETRY.LOCATION: "+place.geometry.location);
+        //bounds.extend(place.geometry.location);
+        }
+      });
+
+      // google.maps.event.addListener(map, 'bounds_changed', function() {
+      //   var bounds = map.getBounds();
+      //   searchBox.setBounds(bounds);
+      // });
+    }//initialize()
+
+    function codeLatLng(lattLon) {
+      var input = lattLon;
+      // var input = document.getElementById('latlng').value;
+      var latlngStr = input.split(',', 2);
+      console.log("evaluated: "+ latlngStr);
+      var lat = parseFloat(latlngStr[0]);
+      var lng = parseFloat(latlngStr[1]);
+      var latlng = new google.maps.LatLng(lat, lng);
+      geocoder.geocode({'latLng': latlng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+            });
+            console.log(results[1].formatted_address);
+          } else {
+            alert('No results found');
+          }
+        } else {
+          alert('Geocoder failed due to: ' + status);
+        }
+      });
+    }//codeLatLng()
+    google.maps.event.addDomListener(window, 'load', geoFindMe);
+  </script>
+  </head>
+
+  <body>
+      <div id="map-canvas"></div> 
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    </div>
+  </body>
+</html>
