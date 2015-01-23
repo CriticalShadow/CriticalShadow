@@ -1,0 +1,62 @@
+@font-face {
+  font-family: Sigward;
+  src: url('Sigward.ttf');
+}
+@font-face {
+  font-family: Eurofurence;
+  src: url('eurof35.ttf');
+}
+#map { 
+  position:absolute; 
+  top:0; 
+  bottom:0; 
+  width:100%; 
+}
+article {
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0px;
+  left:0;
+  overflow:auto;
+}
+.quiet {
+  color:rgba(0,0,0,0.5);
+}
+.scroll {
+  display:block;
+  text-align:center;
+  color: #fefefe;
+}
+.sections {
+  background:rgba(255,255,255,0.5);
+  width:280px;
+}
+section {
+  padding:20px;
+  color:rgba(0,0,0,0.5);
+  -webkit-transition:background 500ms, color 500ms;
+  transition:background 500ms, color 500ms;
+}
+section.active {
+  background: #3D3E40;
+  color: #fefefe;
+}
+.mapbox-logo-true {
+  display: none;
+}
+
+h3 {
+  font-family: Sigward;
+  font-size: 30px;
+}
+
+h1 {
+  font-family: Sigward;
+  font-size: 40px;
+}
+
+p {
+  font-family: Eurofurence;
+  font-size: 18px;
+}

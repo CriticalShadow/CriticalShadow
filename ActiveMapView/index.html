@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Best Bootcamps in San Francisco</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css' rel='stylesheet' />
+  <link href='styles.css' rel='stylesheet' />
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js'></script>
+</head>
+<body>
+  <div id='map'></div>
+  <article id='narrative'>
+    <div class='sections prose'>
+      <section id='cover' class='cover active'>
+        <h1>Bootcamps in San Francisco</h1>
+        <small class='scroll quiet'>Scroll &#x25BE;</small>
+      </section>
+      <section id='hackreactor'>
+        <h3>Hack Reactor</h3>
+        <p>Hack Reactor is the best bootcamp in the world!!</p>
+      </section>
+      <section id='devbootcamp'>
+        <h3>Dev Bootcamp</h3>
+        <p>Dev Bootcamp is a highly respected bootcamp and the first one in the country. asdfasfasf asdfasdfas asdfasdf afasdfasdf</p>
+      </section>
+      <section id='makersquare'>
+        <h3>Maker Square</h3>
+        <p>Maker Square is great. </p>
+      </section>
+      <section id='appacademy'>
+        <h3>App Academy</h3>
+        <p>Testing This</p>
+      </section>
+    </div>
+  </article>
+
+  <script>
+  L.mapbox.accessToken = 'pk.eyJ1Ijoibmxva2FyZSIsImEiOiJpdXpld1NzIn0.MgDypbwDp8FZIaW7bB9YvQ';
+  var places = { type: 'FeatureCollection', features: [
+    { geometry: { type: "Point", coordinates: [-122.4072, 37.7839] }, //flip google's coordinates (lat <-> long)
+      properties: { id: "cover", zoom: 14 }, type: 'Feature' },
+    { geometry: { type: "Point", coordinates: [-122.40904809, 37.78371579] },
+      properties: { id: "hackreactor", zoom: 16 }, type: 'Feature' },
+    { geometry: { type: "Point", coordinates: [-122.39721400, 37.784585] },
+      properties: { id: "devbootcamp", zoom: 16 }, type: 'Feature' },
+    { geometry: { type: "Point", coordinates: [-122.39990899, 37.787496] },
+      properties: { id: "makersquare", zoom: 16 }, type: 'Feature' },
+    { geometry: { type: "Point", coordinates: [-122.41142000, 37.781014] },
+      properties: { id: "appacademy", zoom: 16 }, type: 'Feature' }
+  ]};
+
+  var map = L.mapbox.map('map', 'nlokare.l114oiif', { zoomControl: false });
+
+  var placesLayer = L.mapbox.featureLayer(places).addTo(map);
+
+  // Ahead of time, select the elements we'll need -
+  // the narrative container and the individual sections
+  var narrative = document.getElementById('narrative');
+  var sections = narrative.getElementsByTagName('section');
+  var currentId = '';
+
+  setId('cover');
+
+  function setId (newId) {
+    // If the ID hasn't actually changed, don't do anything
+    if (newId === currentId) {
+      return;
+    }
+    // Otherwise, iterate through layers, setting the current
+    // marker to a different color and zooming to it.
+    placesLayer.eachLayer(function (layer) {
+      if (layer.feature.properties.id === newId) {
+        map.setView(layer.getLatLng(), layer.feature.properties.zoom || 16);
+        layer.setIcon(L.mapbox.marker.icon({
+          'marker-color': '#FF2249',
+          'marker-size': 'large',
+          'marker-symbol': 'college'
+        }));
+      } else {
+        layer.setIcon(L.mapbox.marker.icon({
+          'marker-color': '#404040',
+          'marker-size': 'large',
+          'marker-symbol': 'college'
+        }));
+      }
+    });
+    // highlight the current section
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].id === newId) {
+        sections[i].className = 'active'
+      } else {
+        sections[i].className = '';
+      }
+    }
+    currentId = newId;
+  }
+
+  var onScroll = _.debounce(function (e) {
+    var narrativeHeight = narrative.offsetHeight;
+    var newId = currentId;
+    // Find the section that's currently scrolled-to.
+    // We iterate backwards here so that we find the topmost one.
+    for (var i = sections.length - 1; i >= 0; i--) {
+      var rect = sections[i].getBoundingClientRect();
+      console.log(rect);
+      if (rect.top >= 0 && rect.top <= narrativeHeight) { //TODO: no more room to scroll
+        newId = sections[i].id;
+      }
+    };
+    setId(newId);
+  }, 50);
+
+  narrative.onscroll = onScroll;
+  // narrative.onscroll();
+
+  </script>
+</body>
+</html>
