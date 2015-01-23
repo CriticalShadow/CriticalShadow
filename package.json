@@ -17,9 +17,10 @@
   },
   "homepage": "https://github.com/CriticalShadow/CriticalShadow",
   "dependencies": {
+    "body-parser": "^1.10.2",
+    "express": "~4.11.1",
     "mysql": "^2.5.4",
     "request": "^2.51.0",
-    "sequelize": "^2.0.0-rc8",
-    "express": "~4.11.1"
+    "sequelize": "^2.0.0-rc8"
   }
 }

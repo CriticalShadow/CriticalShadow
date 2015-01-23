@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Log In</title>
-	<link rel="stylesheet" type="text/css" href="../../client/css/bootstrap-3.3.2-dist/css/bootstrap.css">
+	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.3.2-dist/css/bootstrap.css">
 </head>
 <body>
 <div class='container col-md-4'></div>
@@ -10,40 +10,31 @@
 	<fieldset>
 
 	<!-- Form Name -->
-	<legend>Curation Station</legend>
+	<legend>Vagabond Login</legend>
 
 	<!-- Text input-->
-
+	<form name='portal' method="get">
 	<div class="form-group"> 
 	  <div>
-	  <input id="textinput" name="textinput" type="text" placeholder="username" class="form-control input-md">
+	  <input id="textinput" name="usernameInput" type="text" placeholder="username" class="form-control input-md" required>
+
 	  </div>
 	</div>
 
 	<!-- Password input-->
 	<div class="form-group">
 	  <div>
-	    <input id="passwordinput" name="passwordinput" type="password" placeholder="password" class="form-control input-md">
+	    <input id="passwordinput" name="passwordInput" type="password" placeholder="password" class="form-control input-md" name='password' required>
 	  </div>
 	</div>
 
 	<!-- Button -->
 	<div class="form-group">
-	  <div class="col-md-6">
-	    <button class="submitButton">Sign Up</button>
-	  </div>
-	  <div class="col-md-6">
-	    <button class="submitButton">Login</button>
+	  <div class="col-md-12">
+	    <button type='submit' class="submitButton" ng-disabled="push.$invalid">Submit</button>
 	  </div>
 	</div>
-
-	<p>Facebook here</p>
-	<p>Github here</p>
-
-	<legend><h6>Created by Critical Shadow</h6></legend>
-
-
-
+	</form>
 	</fieldset>
 </div>
 <div class='container col-md-4'></div>
