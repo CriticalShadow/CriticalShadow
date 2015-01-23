@@ -34,6 +34,7 @@
         <h3>App Academy</h3>
         <p>Testing This</p>
       </section>
+      <section id="dummy" style="opacity: 0"></section>
     </div>
   </article>
 
@@ -105,7 +106,9 @@
     // We iterate backwards here so that we find the topmost one.
     for (var i = sections.length - 1; i >= 0; i--) {
       var rect = sections[i].getBoundingClientRect();
-      console.log(rect);
+      if (i === 1) {
+        var overflow = document.getElementById('dummy')
+      }
       if (rect.top >= 0 && rect.top <= narrativeHeight) { //TODO: no more room to scroll
         newId = sections[i].id;
       }
@@ -114,7 +117,6 @@
   }, 50);
 
   narrative.onscroll = onScroll;
-  // narrative.onscroll();
 
   </script>
 </body>
