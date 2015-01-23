@@ -60,3 +60,7 @@ p {
   font-family: Eurofurence;
   font-size: 18px;
 }
+
+#dummy {
+  height: 400px;
+}
