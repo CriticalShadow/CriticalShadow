@@ -24,7 +24,7 @@
       </section>
       <section id='devbootcamp'>
         <h3>Dev Bootcamp</h3>
-        <p>Dev Bootcamp is a highly respected bootcamp and the first one in the country. asdfasfasf asdfasdfas asdfasdf afasdfasdf</p>
+        <p>Dev Bootcamp is a highly respected bootcamp and the first of its kind in the country.</p>
       </section>
       <section id='makersquare'>
         <h3>Maker Square</h3>
@@ -34,10 +34,10 @@
         <h3>App Academy</h3>
         <p>Testing This</p>
       </section>
-      <section id="dummy" style="opacity: 0"></section>
+      <section id="dummy"></section>
     </div>
   </article>
-
+  <div>
   <script>
   L.mapbox.accessToken = 'pk.eyJ1Ijoibmxva2FyZSIsImEiOiJpdXpld1NzIn0.MgDypbwDp8FZIaW7bB9YvQ';
   var places = { type: 'FeatureCollection', features: [
@@ -59,6 +59,8 @@
 
   // Ahead of time, select the elements we'll need -
   // the narrative container and the individual sections
+
+  /********* This code is necessary for scrollling functionality and will stay in a script element ******/
   var narrative = document.getElementById('narrative');
   var sections = narrative.getElementsByTagName('section');
   var currentId = '';
@@ -106,10 +108,7 @@
     // We iterate backwards here so that we find the topmost one.
     for (var i = sections.length - 1; i >= 0; i--) {
       var rect = sections[i].getBoundingClientRect();
-      if (i === 1) {
-        var overflow = document.getElementById('dummy')
-      }
-      if (rect.top >= 0 && rect.top <= narrativeHeight) { //TODO: no more room to scroll
+      if (rect.top >= 0 && rect.top <= narrativeHeight) {
         newId = sections[i].id;
       }
     };
