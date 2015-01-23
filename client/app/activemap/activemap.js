@@ -10,13 +10,15 @@ angular.module('activemap', ['ngAnimate', 'ngFx'])
         $scope.content = mapData.content;
         $scope.coords = mapData.coordinates;
         $scope.icon = mapData.icon;
+        $scope.title = mapData.title;
+        $scope.id = mapData.id;
       });
     };
 
     $scope.createCoordinates = function () {
       $scope.coords.forEach(function (locationData) {
         $scope.places.features.push({ geometry: { type: "Point", coordinates: [locationData.longitude, locationData.latitude]},
-          properties: { id: locationData.title, zoom: 14 }, type: 'Feature' });
+          properties: { id: locationData.name, zoom: 14 }, type: 'Feature' });
       });
       $scope.map = L.mapbox.map('map', 'nlokare.l114oiif', { zoomControl: false });
       $scope.placesLayer = L.mapbox.featureLayer($scope.places).addTo($scope.map);
