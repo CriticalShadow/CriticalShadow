@@ -65,9 +65,7 @@
   var sections = narrative.getElementsByTagName('section');
   var currentId = '';
 
-  setId('cover');
-
-  function setId (newId) {
+  var setId = function (newId) {
     // If the ID hasn't actually changed, don't do anything
     if (newId === currentId) {
       return;
@@ -99,7 +97,9 @@
       }
     }
     currentId = newId;
-  }
+  };
+
+  setId('cover');
 
   var onScroll = _.debounce(function (e) {
     var narrativeHeight = narrative.offsetHeight;
