@@ -16,6 +16,10 @@ app.get('/mymap', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/mymap.html'));
 });
 
+app.get('/createMaps', function (req, res) {
+  res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
+});
+
 app.get('/login', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/templates/login.html'));
 });
