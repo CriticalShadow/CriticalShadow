@@ -144,48 +144,6 @@ var setMap = function(map) {
 
 };
 
-
-// setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
-
-// getUser({name: 'neil', password: 'neilspass'});
-
-setMap({name: 'letters12', guid: 'jf90j3fo7', UserId: 1, locations: [
-  {
-    name: 'grandma',
-    latitude: 143.48384905,
-    longitude: 239.43983,
-    description: 'This is the longest description for the first location, it is just amazing, omg...',
-    address: '944 Market Street #8, San Francisco, CA 94102',
-    title: 'Number one user input title'
-  },
-  {
-    name: 'has',
-    latitude: 23.34223265,
-    longitude: 123.98473345,
-    description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
-    address: '113 8th Avenue, San Francisco, CA 94019',
-    title: 'Number two user input title'
-  },
-  {
-    name: 'lice',
-    latitude: 234.34985322,
-    longitude: 11.3478,
-    description: 'yo dude, here\'s my description',
-    address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
-    title: 'Number three user input title'
-  }
-]});
-
-
-
-
-
-
-
-
-
-
-
 var getMap = function(guid) {
 
   var wholeMap = {};
@@ -215,3 +173,47 @@ var getMap = function(guid) {
   // }})
 
 }
+
+
+// setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
+
+// getUser({name: 'neil', password: 'neilspass'});
+
+setMap({name: 'letters12', guid: 'jf90j3fo7', UserId: 1, locations: [
+  {
+    name: 'grandma', // unique location name in the locations table
+    latitude: 143.48384905,
+    longitude: 239.43983,
+    description: 'This is the longest description for the first location, it is just amazing, omg...',
+    address: '944 Market Street #8, San Francisco, CA 94102',
+    title: 'Number one user input title' // this is the user input
+  },
+  {
+    name: 'has',
+    latitude: 23.34223265,
+    longitude: 123.98473345,
+    description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
+    address: '113 8th Avenue, San Francisco, CA 94019',
+    title: 'Number two user input title'
+  },
+  {
+    name: 'lice',
+    latitude: 234.34985322,
+    longitude: 11.3478,
+    description: 'yo dude, here\'s my description',
+    address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
+    title: 'Number three user input title'
+  }
+]});
+
+
+
+
+
+
+
+
+
+
+
+
