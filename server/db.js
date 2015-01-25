@@ -32,7 +32,8 @@ db.MapLocation.sync();
 db.MapLocationContent = db.sequelize.define('MapLocationContent', {
   title: Sequelize.STRING,
   icon_url: Sequelize.STRING,
-  text: Sequelize.BLOB
+  description: Sequelize.BLOB,
+  address: Sequelize.STRING
 });
 
 // A user can create many maps.  1 to many relationship

@@ -1,5 +1,5 @@
 var db = require('./db');
-// var sequelize = require('sequelize');
+var sequelize = require('sequelize');
 
 var setUser = function(user) {
   var name = user.name;
@@ -88,30 +88,45 @@ var setMap = function(map) {
             // check to see if location exists
             (function(index) {
               db.Location.find({ where: {
-                name: locations[index].name
+                name: locations[index].name,
+                latitude: locations[index].latitude,
+                longitude: locations[index].longitude
               }})
               .complete(function(err, location) {
-                if (err) { // if location does not exist we create the location
+                if (err) { 
                   // console.log('error: ', err)
                   return err;
-                } else if (location === null) {
+                } else if (location === null) { // if location does not exist we create the location
                   db.Location.create({
                     name: locations[index].name,
                     latitude: locations[index].latitude,
                     longitude: locations[index].longitude
                   }).complete(function(err, locationdata) {
+                    // assign the MapLocation join table the correct MapId and Location Id for the specific location
                     db.MapLocation.create({
                       MapId: mapResults.dataValues.id,
                       LocationId: locationdata.dataValues.id
                     })
                     .complete(function(err, maplocdata) {
                       if (err) {
+                        console.log(err);
                         return err;
                       } else {
                         console.log('MapLocationdata', maplocdata);
+                        // store the contents for the specific map location
+                        db.MapLocationContent.create({
+                          title: locations[index].title,
+                          description: locations[index].description,
+                          address: locations[index].address,
+                          MapLocationLocationId: maplocdata.LocationId
+                        }).complete(function(err, maplocationcontent) {
+                          if ( err ) {
+                            console.log(err);
+                            return err;
+                          }
+                        })
                       }
                     });
-                    // console.log('location ' + location[index].name + 'created');
                   });
                 } else { // if the location already exists
                   console.log('location ' + location[index].name + ' already exists');
@@ -130,25 +145,34 @@ var setMap = function(map) {
 };
 
 
-// var neil = setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
+// setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
 
 // getUser({name: 'neil', password: 'neilspass'});
 
-setMap({name: 'letters8', guid: 'fhdu9n3', UserId: 1, locations: [
+setMap({name: 'letters12', guid: 'jf90j3fo7', UserId: 1, locations: [
   {
-    name: 'one',
+    name: 'grandma',
     latitude: 143.48384905,
-    longitude: 239.43983
+    longitude: 239.43983,
+    description: 'This is the longest description for the first location, it is just amazing, omg...',
+    address: '944 Market Street #8, San Francisco, CA 94102',
+    title: 'Number one user input title'
   },
   {
-    name: 'more',
+    name: 'has',
     latitude: 23.34223265,
-    longitude: 123.98473345
+    longitude: 123.98473345,
+    description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
+    address: '113 8th Avenue, San Francisco, CA 94019',
+    title: 'Number two user input title'
   },
   {
-    name: 'time',
+    name: 'lice',
     latitude: 234.34985322,
-    longitude: 11.3478
+    longitude: 11.3478,
+    description: 'yo dude, here\'s my description',
+    address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
+    title: 'Number three user input title'
   }
 ]});
 
