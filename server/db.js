@@ -19,8 +19,8 @@ db.Map = db.sequelize.define('Map', {
 
 db.Location = db.sequelize.define('Location', {
   name: Sequelize.STRING,
-  latitude: Sequelize.FLOAT,
-  longitude: Sequelize.FLOAT
+  latitude: Sequelize.DECIMAL(18, 15),
+  longitude: Sequelize.DECIMAL(18, 15)
 });
 
 // The MapLocation is the join table between the Map and Location tables
@@ -33,7 +33,8 @@ db.MapLocationContent = db.sequelize.define('MapLocationContent', {
   title: Sequelize.STRING,
   icon_url: Sequelize.STRING,
   description: Sequelize.BLOB,
-  address: Sequelize.STRING
+  address: Sequelize.STRING,
+  mapOrder: Sequelize.INTEGER
 });
 
 // A user can create many maps.  1 to many relationship
