@@ -27,7 +27,7 @@
   #pac-input {
     background-color: #fff;
     padding: 0 11px 0 13px;
-    width: 400px;
+    width: 100px;
     font-family: Roboto;
     font-size: 15px;
     font-weight: 300;
@@ -62,10 +62,17 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   
   <script>
+    $(document).ready(function(){
 
     var global_lat, global_lon;
     var geocoder = new google.maps.Geocoder();
     var map;
+    var data = {
+      mapName: '',
+      Guid: null,
+      userID: null,
+      location: []
+    };
     
     // Note: need to run a server for geoFindMe()
     // python -m SimpleHTTPServer
@@ -148,7 +155,27 @@
             position: place.geometry.location
           });
 
-        console.log("PLACE.GEOMETRY.LOCATION: "+place.geometry.location);
+        var locObj = function(){
+          data.location.push({
+            name: nameParse(input.value),
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+            address: input.value,
+            desc: null,
+            title: null
+          });
+          data.mapName = $('#mapTit').val();
+        };
+
+        var nameParse = function(address){
+          var temp = address.split(',');
+          return temp[0];
+        }
+
+        locObj();
+
+        console.log(data);
+        // console.log("PLACE.GEOMETRY.LOCATION: "+place.geometry.location);
         //bounds.extend(place.geometry.location);
         }
       });
@@ -184,12 +211,32 @@
       });
     }//codeLatLng()
     google.maps.event.addDomListener(window, 'load', geoFindMe);
+
+    // Stuff steven added
+
+
+    });
+
   </script>
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
   </head>
 
   <body>
-      <div id="map-canvas"></div> 
-      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div class='container'>
+      <div class='row'>
+        <div class="col-md-2 createNav">
+          <p> Map Title </p>
+          <input id="mapTit" type='text' placeholder='Enter map title here' required>
+          <br />
+          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        </div>
+        <div class='col-md-10'>
+          <div id="map-canvas"></div> 
+        </div>
+      </div>
+        
+
+
     </div>
   </body>
 </html>
