@@ -119,7 +119,8 @@ var setMap = function(map) {
                           title: locations[index].title,
                           description: locations[index].description,
                           address: locations[index].address,
-                          MapLocationLocationId: maplocdata.LocationId
+                          MapLocationLocationId: maplocdata.LocationId,
+                          mapOrder: index
                         }).complete(function(err, maplocationcontent) {
                           if ( err ) {
                             console.log(err);
@@ -198,13 +199,14 @@ var getMap = function(guid) {
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
                     wholeMap.locations[index].description = locationcontent.dataValues.description;
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
+                    wholeMap.locations[index].mapOrder = locationcontent.dataValues.mapOrder;
                     if (index === maplocations.length - 1) {
                       // need to change this implementaion!  Returning the correct data, but need a better
                       // than setTimeout
                       setTimeout(function() {
                         console.log('wholeMap', wholeMap);
                         return wholeMap;
-                      }, 1000);
+                      }, 100);
                     }
                   })
                 } else {
@@ -225,17 +227,17 @@ var getMap = function(guid) {
 
 // getUser({name: 'neil', password: 'neilspass'});
 
-// setMap({name: 'letters12', guid: 'jf90j3fo7', UserId: 1, locations: [
+// setMap({name: 'letters13', guid: 'jf90j3fo7', UserId: 1, locations: [
 //   {
-//     name: 'grandma', // unique location name in the locations table
+//     name: 'Starbucks', // unique location name in the locations table
 //     latitude: 143.48384905,
-//     longitude: 239.43983,
+//     longitude: 239.4398548383,
 //     description: 'This is the longest description for the first location, it is just amazing, omg...',
 //     address: '944 Market Street #8, San Francisco, CA 94102',
 //     title: 'Number one user input title' // this is the user input
 //   },
 //   {
-//     name: 'has',
+//     name: 'McDonalds',
 //     latitude: 23.34223265,
 //     longitude: 123.98473345,
 //     description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
@@ -243,9 +245,9 @@ var getMap = function(guid) {
 //     title: 'Number two user input title'
 //   },
 //   {
-//     name: 'lice',
+//     name: 'Super Duper Burgers',
 //     latitude: 234.34985322,
-//     longitude: 11.3478,
+//     longitude: 11.34754352897065584938,
 //     description: 'yo dude, here\'s my description',
 //     address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
 //     title: 'Number three user input title'
