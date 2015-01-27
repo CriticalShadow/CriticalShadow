@@ -184,12 +184,38 @@
       });
     }//codeLatLng()
     google.maps.event.addDomListener(window, 'load', geoFindMe);
+
+    // Stuff steven added
+    var col = true;
+    var size = 'col-md-10';
+
+    $(document).ready(function(){
+      $('.btn').on('click', function(){
+        $('.createNav').toggle('slide');
+      })
+    });
+
   </script>
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
   </head>
 
   <body>
-      <div id="map-canvas"></div> 
-      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div class='container'>
+      <div class='row'>
+        <div class="col-md-12 btn"> Show/Hide </div>
+      </div>
+      <div class='row'>
+        <div class="col-md-2 createNav">
+          <p> Testing </p>
+          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        </div>
+        <div class='col-md-10'>
+          <div id="map-canvas"></div> 
+        </div>
+      </div>
+        
+
+
     </div>
   </body>
 </html>
