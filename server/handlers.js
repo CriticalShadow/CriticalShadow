@@ -1,5 +1,6 @@
 var db = require('./db');
 var sequelize = require('sequelize');
+var Promise = require('bluebird');
 
 var setUser = function(user) {
   var name = user.name;
@@ -147,13 +148,13 @@ var setMap = function(map) {
 var getMap = function(guid) {
 
   var wholeMap = {};
+  wholeMap.locations = [];
 
   db.Map
-  .find({ where: 
-    {
+  .find({ 
+    where: {
       guid: guid
-    }, 
-      include: [Location]
+    }
   })
   .complete(function(err, map) {
     if (!!err) {
@@ -161,16 +162,61 @@ var getMap = function(guid) {
     } else if (!map) {
       console.log('No map with the guid ' + guid + ' has been found.')
     } else {
-      wholeMap.map = map;
-      console.log('All attributes of the map:', map)
+      wholeMap.map = map.dataValues;
+      db.MapLocation.findAll({ 
+        where: {
+          MapId: map.id
+        }
+      })
+      .complete(function(err, maplocations) {
+        if (err) {
+          console.log('Error finding the associated map\'s locations', err);
+        } else if (maplocations.length === 0) {
+          console.log('No map locations exist for that map id', maplocations);
+        } else {
+          for (var i = 0; i < maplocations.length; i++) {
+            (function(index) {
+              wholeMap.locations.push(maplocations[index].dataValues);
+              db.Location.find({
+                where: {
+                  id: maplocations[index].LocationId
+                }
+              })
+              .complete(function(err, location) {
+                if (err) {
+                  console.log('Error returning the location from the locations table', err); 
+                } else if (typeof location === 'object') {
+                  wholeMap.locations[index].latitude = location.latitude;
+                  wholeMap.locations[index].longitude = location.longitude;
+                  db.MapLocationContent.find({ 
+                    where: {
+                      MapLocationLocationId: location.dataValues.id
+                    }
+                  })
+                  .complete(function(err, locationcontent) {
+                    wholeMap.locations[index].title = locationcontent.dataValues.title;
+                    wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
+                    wholeMap.locations[index].description = locationcontent.dataValues.description;
+                    wholeMap.locations[index].address = locationcontent.dataValues.address;
+                    if (index === maplocations.length - 1) {
+                      // need to change this implementaion!  Returning the correct data, but need a better
+                      // than setTimeout
+                      setTimeout(function() {
+                        console.log('wholeMap', wholeMap);
+                        return wholeMap;
+                      }, 1000);
+                    }
+                  })
+                } else {
+                  console.log('Location not found');
+                }
+              })
+            }(i))
+          }
+        }
+      });
     }
   });
-
-  return wholeMap;
-  // db.Locations
-  // .find({ where: {
-
-  // }})
 
 }
 
@@ -179,32 +225,37 @@ var getMap = function(guid) {
 
 // getUser({name: 'neil', password: 'neilspass'});
 
-setMap({name: 'letters12', guid: 'jf90j3fo7', UserId: 1, locations: [
-  {
-    name: 'grandma', // unique location name in the locations table
-    latitude: 143.48384905,
-    longitude: 239.43983,
-    description: 'This is the longest description for the first location, it is just amazing, omg...',
-    address: '944 Market Street #8, San Francisco, CA 94102',
-    title: 'Number one user input title' // this is the user input
-  },
-  {
-    name: 'has',
-    latitude: 23.34223265,
-    longitude: 123.98473345,
-    description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
-    address: '113 8th Avenue, San Francisco, CA 94019',
-    title: 'Number two user input title'
-  },
-  {
-    name: 'lice',
-    latitude: 234.34985322,
-    longitude: 11.3478,
-    description: 'yo dude, here\'s my description',
-    address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
-    title: 'Number three user input title'
-  }
-]});
+// setMap({name: 'letters12', guid: 'jf90j3fo7', UserId: 1, locations: [
+//   {
+//     name: 'grandma', // unique location name in the locations table
+//     latitude: 143.48384905,
+//     longitude: 239.43983,
+//     description: 'This is the longest description for the first location, it is just amazing, omg...',
+//     address: '944 Market Street #8, San Francisco, CA 94102',
+//     title: 'Number one user input title' // this is the user input
+//   },
+//   {
+//     name: 'has',
+//     latitude: 23.34223265,
+//     longitude: 123.98473345,
+//     description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
+//     address: '113 8th Avenue, San Francisco, CA 94019',
+//     title: 'Number two user input title'
+//   },
+//   {
+//     name: 'lice',
+//     latitude: 234.34985322,
+//     longitude: 11.3478,
+//     description: 'yo dude, here\'s my description',
+//     address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
+//     title: 'Number three user input title'
+//   }
+// ]});
+
+getMap('jf90j3fo7');
+
+
+
 
 
 
