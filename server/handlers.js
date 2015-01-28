@@ -23,12 +23,12 @@ handlers.setUser = function (username) {
           if (err) { 
             console.log(err)
           } else {
-            console.log(user);
+            // console.log(user);
             resolve(user);
           }
         });  
       } else { // if found, tell the user that the name is already taken
-        console.log(user);
+        // console.log(user);
         resolve(user);
       }
     });
@@ -152,7 +152,7 @@ handlers.getMap = function (guid) {
       guid: guid
     }
   })
-  .complete(function(err, map) {
+  .complete(function (err, map) {
     if (!!err) {
       console.log('An error occurred while searching for the map:', err)
     } else if (!map) {
@@ -164,7 +164,7 @@ handlers.getMap = function (guid) {
           MapId: map.id
         }
       })
-      .complete(function(err, maplocations) {
+      .complete(function (err, maplocations) {
         if (err) {
           console.log('Error finding the associated map\'s locations', err);
         } else if (maplocations.length === 0) {

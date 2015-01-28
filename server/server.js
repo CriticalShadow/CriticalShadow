@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var app = express();
 var port = process.env.PORT || 3000;
 var host = process.env.HOST;
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser());
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -62,7 +64,16 @@ app.get('/mymap', function (req, res) {
 });
 
 app.get('/createMaps', function (req, res) {
+  var UserId = req.cookies.u_id;
   res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
+}
+
+app.post('/createMaps', function (req, res) {
+  var UserId = req.cookies.u_id; //identifies the UserId
+  var map = req.body; //map data from client
+  map.UserId = UserId; //adds UserId property
+  handlers.setMap(map);  //Adds this map to the database
+  //TODO: Will need to redirect the user to another page when submitted
 });
 
 app.get('/login', function (req, res) {
