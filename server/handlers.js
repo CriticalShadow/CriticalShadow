@@ -1,26 +1,23 @@
 var db = require('./db');
 var sequelize = require('sequelize');
 var Promise = require('bluebird');
+var handlers = {};
 
-var setUser = function(user) {
-  var name = user.name;
-  var password = user.password;
-  var email = user.email;
+handlers.setUser = function (username) {
+  var name = username;
   db.User
   .find({ where: {
     name: name}
   })
-  .complete(function(err, user) {
+  .complete(function (err, user) {
     if (err) {
       console.log(err);
       return err;
     } else if (user === null) { // if not found, then we create the user
       db.User.create({
-        name: name,
-        password: password,
-        email: email
+        name: username
       })
-      .complete(function(err, user) {
+      .complete(function (err, user) {
         if (err) { 
           console.log(err)
         } else {
@@ -34,7 +31,7 @@ var setUser = function(user) {
   })
 };
 
-var getUser = function(user) {
+handlers.getUser = function (user) {
   var name = user.name;
   var password = user.password;
   var email = user.email;
@@ -43,7 +40,7 @@ var getUser = function(user) {
     name: name,
     password: password
   }})
-  .complete(function(err, user) {
+  .complete(function (err, user) {
     if (!!err) {
       console.log('An error occurred while searching for John:', err)
     } else if (!user) {
@@ -55,7 +52,7 @@ var getUser = function(user) {
   }) 
 };
 
-var setMap = function(map) {
+handlers.setMap = function (map) {
 
   var name = map.name;
   var guid = map.guid;
@@ -68,7 +65,7 @@ var setMap = function(map) {
   db.Map.find({ where: {
     guid: guid
   }})
-  .complete(function(err, results) {
+  .complete(function (err, results) {
     if (err) {
       // console.log('error searching for map guid')
       return err;
@@ -78,7 +75,7 @@ var setMap = function(map) {
         guid: guid,
         UserId: UserId
       })
-      .complete(function(err, mapdata) {
+      .complete(function (err, mapdata) {
         // console.log('mapdata', mapdata);
         if (err) {
           console.log('Error creating map: ', err);
@@ -146,7 +143,7 @@ var setMap = function(map) {
 
 };
 
-var getMap = function(guid) {
+handlers.getMap = function(guid) {
 
   var wholeMap = {};
   wholeMap.locations = [];
@@ -223,7 +220,7 @@ var getMap = function(guid) {
 }
 
 
-// setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
+//setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
 
 // getUser({name: 'neil', password: 'neilspass'});
 
@@ -254,7 +251,8 @@ var getMap = function(guid) {
 //   }
 // ]});
 
-getMap('jf90j3fo7');
+// getMap('jf90j3fo7');
+module.exports = handlers;
 
 
 

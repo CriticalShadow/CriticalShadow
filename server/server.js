@@ -1,12 +1,53 @@
-var express   	= require('express');
-var bodyParser  = require('body-parser');
-var app 	    = express();
-var port 	    = process.env.PORT || 3000;
-var host 		= process.env.HOST;
-var path 		= require('path');
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
+var port = process.env.PORT || 3000;
+var host = process.env.HOST;
+var path = require('path');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var db = require('./db');
+var handlers = require('./handlers');
+
+var FACEBOOK_APP_ID = 922911927720037;
+var FACEBOOK_APP_SECRET = '513872ee43b515e579d4133a0d7e4086';
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
+
+passport.use(new FacebookStrategy({
+  clientID: FACEBOOK_APP_ID,
+  clientSecret: FACEBOOK_APP_SECRET,
+  callbackURL: "http://localhost:3000/auth/facebook/callback"
+},
+  function (accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+      return done(null, profile);
+    });
+  }
+  ));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(__dirname + '/../client'));
-app.use(bodyParser.urlencoded({ extended: true }));
+
+
+//This is the handler for Facebook authentication
+app.get('/auth/facebook', passport.authenticate('facebook'), function (req, res) {
+});
+
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/signup' }), function (req, res) {
+  handlers.setUser(req.user.displayName);
+  res.redirect('/');
+});
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname, 'index.html');
@@ -28,35 +69,10 @@ app.get('/signup', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
 });
 
-app.post('/signup', function(req, res) {
-    
-    //check to see if info exists in db, if not then move forward, if so then send message saying
-    //user exists
-
-    var username = req.body.usernameInput;
-    var password = req.body.passwordInput; // we can hash here when the time comes
-    var email	 = req.body.emailInput;
-
-    //Sequelize user.create function here using client info
-
-    console.log(req.body);
-
+app.post('/signup', function (req, res) {
+  res.redirect('/auth/facebook');
 });
 
-app.get('/login', function(req, res) {
-    
-    //check to see if info exists in db as well as matching password, if so then move forward,
-    // if so then send message
-
-    var username = req.body.usernameInput;
-    var password = req.body.passwordInput; // we can hash here when the time comes
-
-    //Sequelize user.create function here to check db for proper user information
-
-    console.log(req.body);
-
-});
-
-app.listen(port, function() {
+app.listen(port, function () {
   console.log("Listening on " + port);
 });

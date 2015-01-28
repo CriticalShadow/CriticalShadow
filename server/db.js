@@ -1,14 +1,12 @@
 var Sequelize = require('sequelize');
 var db = {};
 db.sequelize = new Sequelize('shadowdb', 'root', '', {
-  dialect: "mysql" // or 'sqlite', 'postgres', 'mariadb'
+  dialect: "sqlite" // or 'sqlite', 'postgres', 'mariadb'
 });
 
 // User ID primary key is automatically created by Sequelize, no need to define this in the model
 db.User = db.sequelize.define('User', {
   name: Sequelize.STRING,
-  password: Sequelize.STRING,
-  email: Sequelize.STRING
 });
 
 // Map ID primary key automaticaly created.  User ID foreign key will be assigned later 
