@@ -9,6 +9,7 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var db = require('./db');
 var handlers = require('./handlers');
+var Guid = require('node-uuid');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,12 +73,12 @@ app.route('/createMaps')
     res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
   })
   .post(function (req, res) {
-    var UserId = req.cookies.u_id; //identifies the UserId
+    var userId = req.cookies.u_id; //identifies the UserId
+    var guid = Guid.v4().slice(0,5);
     var map = req.body; //map data from client
-    map.UserId = UserId; //adds UserId property
+    map.UserId = userId; //adds UserId property
+    map.Guid = guid;
     handlers.setMap(map);  //Adds this map to the database
-    console.log(req.body);
-    console.log(typeof req.body);
     res.redirect('/');
   });
 
