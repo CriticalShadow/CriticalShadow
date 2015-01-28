@@ -6604,3 +6604,21 @@ video#bgvid {
 .submitButton {
   width: 100%;
 }
+
+/* Steven's Styles */
+
+.div_style {
+  text-align: center;
+  border-width: 1px;
+  border-radius: 3px;
+  background-color: rgba(0,0,0,.8);
+  color: white;
+  -webkit-box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+}
+
+.submitButton {
+  width: 100%;
+}
+

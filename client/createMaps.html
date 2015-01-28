@@ -26,8 +26,9 @@
 
   #pac-input {
     background-color: #fff;
+    border-color: #ff0000;
     padding: 0 11px 0 13px;
-    width: 100px;
+    width: 150px;
     font-family: Roboto;
     font-size: 15px;
     font-weight: 300;
@@ -35,10 +36,10 @@
   }
 
   #pac-input:focus {
-    border-color: #4d90fe;
+    border-color: #ff0000;
     margin-left: -1px;
     padding-left: 14px;  /* Regular padding-left + 1. */
-    width: 401px;
+    width: 300px;
   }
 
   .pac-container {
@@ -67,11 +68,14 @@
     var global_lat, global_lon;
     var geocoder = new google.maps.Geocoder();
     var map;
+    var pointCounter = 0;
+
+    // GLOBAL DATA OBJECT TO BE SENT TO SERVER
     var data = {
-      mapName: '',
+      mapName: null,
       Guid: null,
       userID: null,
-      location: []
+      location: [] // array of objects contains points. 
     };
     
     // Note: need to run a server for geoFindMe()
@@ -117,13 +121,26 @@
           //placeMarker(event.latLng);
           var latitude = event.latLng.lat();
           var longitude = event.latLng.lng();
-          console.log(latitude+','+longitude);
-          codeLatLng(latitude+','+longitude);
+          //console.log(latitude+','+longitude);
+          var asdf = codeLatLng(latitude+','+longitude);
+          console.log(asdf);
 
           var marker = new google.maps.Marker({
             position: event.latLng,
             map: map
           });
+
+          // var nameParse = function(address){
+          // var temp = address.split(',');
+          // return temp[0];
+          //  }
+
+
+          // TODO: POINT & CLICK
+          // $('.div_container').append(
+          // '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(input)+'\"+></input>'+
+          // '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
+          // );//note: pointCounter++ is so the next one with have +1 index.
 
       });
 
@@ -155,26 +172,32 @@
             position: place.geometry.location
           });
 
-        var locObj = function(){
-          data.location.push({
-            name: nameParse(input.value),
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-            address: input.value,
-            desc: null,
-            title: null
-          });
-          data.mapName = $('#mapTit').val();
-        };
+        // var locObj = function(){
+        //   data.location.push({
+        //     name: nameParse(input.value),
+        //     lat: place.geometry.location.lat(),
+        //     lng: place.geometry.location.lng(),
+        //     address: input.value,
+        //     desc: null,
+        //     title: null
+        //   });
+        //   data.mapName = $('#mapTit').val();
+        // };
 
         var nameParse = function(address){
           var temp = address.split(',');
           return temp[0];
         }
 
-        locObj();
+        // locObj();
 
-        console.log(data);
+        $('.div_container').append(
+          '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input>'+
+          '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input.value+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+place.geometry.location.lat()+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+place.geometry.location.lng()+'></input></div>'
+          );//note: pointCounter++ is so the next one with have +1 index.
+ 
+
+        //console.log(data);
         // console.log("PLACE.GEOMETRY.LOCATION: "+place.geometry.location);
         //bounds.extend(place.geometry.location);
         }
@@ -186,22 +209,29 @@
       // });
     }//initialize()
 
+
+
+    // google geoCoder. Returns an address from waypoints. 
+    // Quotas: 5 per second and 2500 per day. 
     function codeLatLng(lattLon) {
       var input = lattLon;
       // var input = document.getElementById('latlng').value;
       var latlngStr = input.split(',', 2);
-      console.log("evaluated: "+ latlngStr);
+      //console.log("evaluated: "+ latlngStr);
       var lat = parseFloat(latlngStr[0]);
       var lng = parseFloat(latlngStr[1]);
       var latlng = new google.maps.LatLng(lat, lng);
+
       geocoder.geocode({'latLng': latlng}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[1]) {
-            marker = new google.maps.Marker({
-                position: latlng,
-                map: map
-            });
-            console.log(results[1].formatted_address);
+            // marker = new google.maps.Marker({
+            //     position: latlng,
+            //     map: map
+            // });
+             var addr = (results[1].formatted_address).toString();
+             console.log(addr);
+             return addr.toString();
           } else {
             alert('No results found');
           }
@@ -210,12 +240,37 @@
         }
       });
     }//codeLatLng()
+
+
     google.maps.event.addDomListener(window, 'load', geoFindMe);
 
-    // Stuff steven added
+    
+    $('.pushToServer').click(function(){
+      var points_length = $('.onePoint').length;
+      for( var i = 0; i < points_length; i++ ){
+        var pointObj = {};
+        pointObj['name'] = $('.in_name'+i).val();
+        pointObj['lat'] = $('.pointLat'+i).val();
+        pointObj['lng'] = $('.pointLng'+i).val();
+        pointObj['address'] = $('.pointAddr'+i).val();
+        pointObj['desc'] = $('.in_text'+i).val();
 
+        data.location.push(pointObj);
+      }
+      data.mapName = $('#mapTit').val();
 
+      console.log(data);
+      //*****************AJAX POST HERE*****************//
+      
     });
+
+
+     // $('.div_container').append(
+     //      '<div class="onePoint"><input class="in_name" value=\"'+ nameParse(input.value)+'\"+></input>'+
+     //      '<textarea class="in_text"></textarea><br></div>'
+     //      );
+
+    });// DOM ready
 
   </script>
   <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
@@ -224,14 +279,25 @@
   <body>
     <div class='container'>
       <div class='row'>
+
+
         <div class="col-md-2 createNav">
           <p> Map Title </p>
           <input id="mapTit" type='text' placeholder='Enter map title here' required>
           <br />
           <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <hr>
+        <br>
+        <div class='div_container'></div>
         </div>
+
+
         <div class='col-md-10'>
           <div id="map-canvas"></div> 
+          <form>
+            <button type='button' class="pushToServer">Submit</button>
+            <button type='reset' value="Reset">Reset</button>
+          </form>
         </div>
       </div>
         
