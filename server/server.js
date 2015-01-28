@@ -76,7 +76,9 @@ app.route('/createMaps')
     var map = req.body; //map data from client
     map.UserId = UserId; //adds UserId property
     handlers.setMap(map);  //Adds this map to the database
-    //TODO: Will need to redirect the user to another page when submitted
+    console.log(req.body);
+    console.log(typeof req.body);
+    res.redirect('/');
   });
 
 //Login routes

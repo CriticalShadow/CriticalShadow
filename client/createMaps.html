@@ -259,9 +259,19 @@
       }
       data.mapName = $('#mapTit').val();
 
-      console.log(data);
       //*****************AJAX POST HERE*****************//
-      
+
+      $.ajax({
+          type: "POST",
+          url: './createMaps',
+          data: JSON.stringify(data),
+          success: function(){
+            console.log('Successful POST!');
+          },
+          error: function(){
+            console.log('POST Error');
+          }
+      });
     });
 
 
