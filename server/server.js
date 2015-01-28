@@ -9,6 +9,13 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var db = require('./db');
 var handlers = require('./handlers');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(express.static(__dirname + '/../client'));
+
 var FACEBOOK_APP_ID = 'insert FB APP_ID';
 var FACEBOOK_APP_SECRET = 'insert FB APP_SECRET';
 
@@ -31,14 +38,6 @@ passport.use(new FacebookStrategy({
     });
   }
   ));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(express.static(__dirname + '/../client'));
-
 
 //This is the handler for Facebook authentication
 app.get('/auth/facebook', passport.authenticate('facebook'), function (req, res) {

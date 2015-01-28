@@ -137,7 +137,7 @@ handlers.setMap = function (map) {
   })
 };
 
-handlers.getMap = function(guid) {
+handlers.getMap = function (guid) {
   var wholeMap = {};
   wholeMap.locations = [];
 
