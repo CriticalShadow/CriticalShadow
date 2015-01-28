@@ -44,9 +44,10 @@ app.use(express.static(__dirname + '/../client'));
 app.get('/auth/facebook', passport.authenticate('facebook'), function (req, res) {
 });
 
+//Facebook redirects to this URL upon approval
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/signup' }), function (req, res) {
-  handlers.setUser(req.user.displayName);
-  res.redirect('/');
+  handlers.setUser(req.user.displayName); //pass along the user's display name ("John Doe") to the setUser
+  res.redirect('/'); //send the user back to the homepage TODO: CreateMaps Page
 });
 
 app.get('/', function (req, res) {
@@ -69,7 +70,8 @@ app.get('/signup', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
 });
 
-app.post('/signup', function (req, res) {
+//Handles both sign up and login form actions
+app.post('/facebook', function (req, res) {
   res.redirect('/auth/facebook');
 });
 

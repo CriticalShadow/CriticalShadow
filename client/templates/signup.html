@@ -2,50 +2,35 @@
 <html>
 <head>
 	<title>Sign Up</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.3.2-dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/cover.css">
 </head>
 <body>
 <div class="site-wrapper">
-<div class='container col-md-4'></div>
-<div class='container col-md-4 login'>
-	<fieldset>
-
-	<!-- Form Name -->
-	<legend>Vagabond Sign Up</legend>
-
-	<!-- Text input-->
-	<form name='portal' method="post" action='/signup'>
-	<div class="form-group"> 
-	  <div>
-	  <input id="textinput" name="usernameInput" type="text" placeholder="username" class="form-control input-md">
-
-	  </div>
-	</div>
-
-	<!-- Password input-->
-	<div class="form-group">
-	  <div>
-	    <input id="passwordinput" name="passwordInput" type="password" placeholder="password" class="form-control input-md" name='password'>
-	  </div>
-	</div>
-
-	<div class="form-group">
-	  <div>
-	    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="email" name='emailInput'>
-	  </div>
-	</div>
-
-	<!-- Button -->
-	<div class="form-group push">
-	  <div class="col-md-12">
-	    <button type='submit' class="submitButton" ng-disabled="push.$invalid">Submit</button>
-	  </div>
-	</div>
-	</form>
-	</fieldset>
-</div>
-<div class='container col-md-4'></div>
+  <div class="site-wrapper-inner">
+    <div class="cover-container">
+      <div class="masthead clearfix">
+        <div class="inner">
+          <h3 class="masthead-brand branding">Vagabond</h3>
+          <nav>
+            <ul class="nav masthead-nav">
+            	<li><a href="/">Home</a></li>
+              <li><a href="/mymap">View Example</a></li>
+              <li><a herf="/login">Login</a></li>
+              <li class="active"><a href="/signup">Sign Up</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+			<div class="col-md-4">
+				<h2>Join Vagabond Today</h2>
+				<form method="post" action="/facebook">
+				  <button type="submit" class="btn btn-primary">Sign Up with Facebook</button>
+				</form>
+			</div>
+			<div class="col-md-4"></div>
+  </div>
 </div>
 </body>
 </html>
