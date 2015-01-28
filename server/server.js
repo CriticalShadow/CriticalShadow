@@ -55,39 +55,47 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
     });
 });
 
+//Home page
 app.get('/', function (req, res) {
   res.sendFile(__dirname, 'index.html');
 });
 
+//View Example page
 app.get('/mymap', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/mymap.html'));
 });
 
-app.get('/createMaps', function (req, res) {
-  var UserId = req.cookies.u_id;
-  res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
-}
+//createMaps page for individual users
+app.route('/createMaps')
+  .get(function (req, res) {
+    var UserId = req.cookies.u_id;
+    res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
+  })
+  .post(function (req, res) {
+    var UserId = req.cookies.u_id; //identifies the UserId
+    var map = req.body; //map data from client
+    map.UserId = UserId; //adds UserId property
+    handlers.setMap(map);  //Adds this map to the database
+    //TODO: Will need to redirect the user to another page when submitted
+  });
 
-app.post('/createMaps', function (req, res) {
-  var UserId = req.cookies.u_id; //identifies the UserId
-  var map = req.body; //map data from client
-  map.UserId = UserId; //adds UserId property
-  handlers.setMap(map);  //Adds this map to the database
-  //TODO: Will need to redirect the user to another page when submitted
-});
+//Login routes
+app.route('/login')
+  .get(function (req, res) {
+    res.sendFile(path.join(__dirname, '/../client/templates/login.html'));
+  })
+  .post(function (req, res) {
+    res.redirect('/auth/facebook');
+  });
 
-app.get('/login', function (req, res) {
-  res.sendFile(path.join(__dirname, '/../client/templates/login.html'));
-});
-
-app.get('/signup', function (req, res) {
-  res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
-});
-
-//Handles both sign up and login form actions on the respective pages
-app.post('/facebook', function (req, res) {
-  res.redirect('/auth/facebook');
-});
+//Sign up routes
+app.route('/signup')
+  .get(function (req, res) {
+    res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
+  })
+  .post(function (req, res) {
+    res.redirect('/auth/facebook');
+  });
 
 app.listen(port, function () {
   console.log("Listening on " + port);
