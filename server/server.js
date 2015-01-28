@@ -9,8 +9,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var db = require('./db');
 var handlers = require('./handlers');
 
-var FACEBOOK_APP_ID = 922911927720037;
-var FACEBOOK_APP_SECRET = '513872ee43b515e579d4133a0d7e4086';
+var FACEBOOK_APP_ID = 'insert FB APP_ID';
+var FACEBOOK_APP_SECRET = 'insert FB APP_SECRET';
 
 passport.serializeUser(function (user, done) {
   done(null, user);
