@@ -50,8 +50,9 @@ app.get('/auth/facebook', passport.authenticate('facebook'), function (req, res)
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/signup' }), function (req, res) {
   handlers.setUser(req.user.displayName)
     .then(function (user) {
-    res.cookie('u_id', user.id)
-    }).then(function () {
+      res.cookie('u_id', user.id);
+    })
+    .then(function () {
       res.redirect('/');
     });
 });
@@ -74,7 +75,7 @@ app.route('/createMaps')
   })
   .post(function (req, res) {
     var userId = req.cookies.u_id; //identifies the UserId
-    var guid = Guid.v4().slice(0,5);
+    var guid = Guid.v4().slice(0, 5);
     var map = req.body; //map data from client
     map.UserId = userId; //adds UserId property
     map.Guid = guid;
