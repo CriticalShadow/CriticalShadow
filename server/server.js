@@ -9,8 +9,15 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var db = require('./db');
 var handlers = require('./handlers');
 
-var FACEBOOK_APP_ID = 'insert FB APP_ID';
-var FACEBOOK_APP_SECRET = 'insert FB APP_SECRET';
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(express.static(__dirname + '/../client'));
+
+var FACEBOOK_APP_ID = 922911927720037;
+var FACEBOOK_APP_SECRET = '513872ee43b515e579d4133a0d7e4086';
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -32,22 +39,18 @@ passport.use(new FacebookStrategy({
   }
   ));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(express.static(__dirname + '/../client'));
-
-
-//This is the handler for Facebook authentication
+//This is the handler for Facebook authentication. Our application redirects to facebook which will ask for permission and then make a GET req to the route below
 app.get('/auth/facebook', passport.authenticate('facebook'), function (req, res) {
 });
 
 //Facebook redirects to this URL upon approval
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/signup' }), function (req, res) {
-  handlers.setUser(req.user.displayName); //pass along the user's display name ("John Doe") to the setUser
-  res.redirect('/'); //send the user back to the homepage TODO: CreateMaps Page
+  handlers.setUser(req.user.displayName)
+    .then(function (user) {
+    res.cookie('u_id', user.id)
+    }).then(function () {
+      res.redirect('/');
+    });
 });
 
 app.get('/', function (req, res) {
@@ -70,7 +73,7 @@ app.get('/signup', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
 });
 
-//Handles both sign up and login form actions
+//Handles both sign up and login form actions on the respective pages
 app.post('/facebook', function (req, res) {
   res.redirect('/auth/facebook');
 });

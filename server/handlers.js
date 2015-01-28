@@ -5,49 +5,54 @@ var Promise = require('bluebird');
 var handlers = {};
 
 handlers.setUser = function (username) {
-  var name = username;
-  db.User
-  .find({ where: {
-    name: name}
-  })
-  .complete(function (err, user) {
-    if (err) {
-      console.log(err);
-      return err;
-    } else if (user === null) { // if not found, then we create the user
-      db.User.create({
-        name: username
-      })
-      .complete(function (err, user) {
-        if (err) { 
-          console.log(err)
-        } else {
-          console.log(user);
-          return user;
-        }
-      });  
-    } else { // if found, tell the user that the name is already taken
-      console.log('Username already exists');
-    }
-  })
+  return new Promise(function (resolve, reject) {
+    var name = username;
+    db.User
+    .find({ where: {
+      name: name}
+    })
+    .complete(function (err, user) {
+      if (err) {
+        console.log(err);
+        return err;
+      } else if (user === null) { // if not found, then we create the user
+        db.User.create({
+          name: username
+        })
+        .complete(function (err, user) {
+          if (err) { 
+            console.log(err)
+          } else {
+            console.log(user);
+            resolve(user);
+          }
+        });  
+      } else { // if found, tell the user that the name is already taken
+        console.log(user);
+        resolve(user);
+      }
+    });
+  });
 };
 
 handlers.getUser = function (user) {
-  var name = user.name;
-  db.User
-  .find({ where: {
-    name: name,
-  }})
-  .complete(function (err, user) {
-    if (!!err) {
-      console.log('An error occurred while searching for John:', err)
-    } else if (!user) {
-      console.log('No user with the username ' + name + ' has been found.')
-    } else {
-      console.log('Hello ' + user.name + '!')
-      console.log('All attributes of john:', user.values)
-    }
-  }) 
+  return new Promise(function (resolve, reject) {
+    var name = user.name;
+    db.User
+    .find({ where: {
+      name: name
+    }})
+    .complete(function (err, user) {
+      if (!!err) {
+        console.log('An error occurred while searching for John:', err)
+      } else if (!user) {
+        console.log('No user with the username ' + name + ' has been found.')
+      } else {
+        console.log(user);
+        resolve(user);
+      }
+    });
+  });
 };
 
 handlers.setMap = function (map) {
@@ -137,7 +142,7 @@ handlers.setMap = function (map) {
   })
 };
 
-handlers.getMap = function(guid) {
+handlers.getMap = function (guid) {
   var wholeMap = {};
   wholeMap.locations = [];
 
