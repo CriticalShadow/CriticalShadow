@@ -1,6 +1,7 @@
 var db = require('./db');
 var sequelize = require('sequelize');
 var Promise = require('bluebird');
+
 var handlers = {};
 
 handlers.setUser = function (username) {
@@ -33,12 +34,9 @@ handlers.setUser = function (username) {
 
 handlers.getUser = function (user) {
   var name = user.name;
-  var password = user.password;
-  var email = user.email;
   db.User
   .find({ where: {
     name: name,
-    password: password
   }})
   .complete(function (err, user) {
     if (!!err) {
@@ -53,7 +51,6 @@ handlers.getUser = function (user) {
 };
 
 handlers.setMap = function (map) {
-
   var name = map.name;
   var guid = map.guid;
   var UserId = map.UserId;
@@ -90,7 +87,7 @@ handlers.setMap = function (map) {
                 latitude: locations[index].latitude,
                 longitude: locations[index].longitude
               }})
-              .complete(function(err, location) {
+              .complete(function (err, location) {
                 if (err) { 
                   // console.log('error: ', err)
                   return err;
@@ -99,13 +96,13 @@ handlers.setMap = function (map) {
                     name: locations[index].name,
                     latitude: locations[index].latitude,
                     longitude: locations[index].longitude
-                  }).complete(function(err, locationdata) {
+                  }).complete(function (err, locationdata) {
                     // assign the MapLocation join table the correct MapId and Location Id for the specific location
                     db.MapLocation.create({
                       MapId: mapResults.dataValues.id,
                       LocationId: locationdata.dataValues.id
                     })
-                    .complete(function(err, maplocdata) {
+                    .complete(function (err, maplocdata) {
                       if (err) {
                         console.log(err);
                         return err;
@@ -118,8 +115,8 @@ handlers.setMap = function (map) {
                           address: locations[index].address,
                           MapLocationLocationId: maplocdata.LocationId,
                           mapOrder: index
-                        }).complete(function(err, maplocationcontent) {
-                          if ( err ) {
+                        }).complete(function (err, maplocationcontent) {
+                          if (err) {
                             console.log(err);
                             return err;
                           }
@@ -135,16 +132,12 @@ handlers.setMap = function (map) {
           }
         }
       })
-      
     } else { // update the locations associated with the map guid
-
     }
   })
-
 };
 
 handlers.getMap = function(guid) {
-
   var wholeMap = {};
   wholeMap.locations = [];
 
@@ -173,14 +166,14 @@ handlers.getMap = function(guid) {
           console.log('No map locations exist for that map id', maplocations);
         } else {
           for (var i = 0; i < maplocations.length; i++) {
-            (function(index) {
+            (function (index) {
               wholeMap.locations.push(maplocations[index].dataValues);
               db.Location.find({
                 where: {
                   id: maplocations[index].LocationId
                 }
               })
-              .complete(function(err, location) {
+              .complete(function (err, location) {
                 if (err) {
                   console.log('Error returning the location from the locations table', err); 
                 } else if (typeof location === 'object') {
@@ -191,7 +184,7 @@ handlers.getMap = function(guid) {
                       MapLocationLocationId: location.dataValues.id
                     }
                   })
-                  .complete(function(err, locationcontent) {
+                  .complete(function (err, locationcontent) {
                     wholeMap.locations[index].title = locationcontent.dataValues.title;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
                     wholeMap.locations[index].description = locationcontent.dataValues.description;
@@ -200,7 +193,7 @@ handlers.getMap = function(guid) {
                     if (index === maplocations.length - 1) {
                       // need to change this implementaion!  Returning the correct data, but need a better
                       // than setTimeout
-                      setTimeout(function() {
+                      setTimeout(function () {
                         console.log('wholeMap', wholeMap);
                         return wholeMap;
                       }, 100);
@@ -216,15 +209,15 @@ handlers.getMap = function(guid) {
       });
     }
   });
+};
 
-}
-
+module.exports = handlers;
 
 //setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
 
-// getUser({name: 'neil', password: 'neilspass'});
+//getUser({name: 'neil', password: 'neilspass'});
 
-// setMap({name: 'letters13', guid: 'jf90j3fo7', UserId: 1, locations: [
+// handlers.setMap({name: 'letters13', guid: 'jf90j3fo7', UserId: 1, locations: [
 //   {
 //     name: 'Starbucks', // unique location name in the locations table
 //     latitude: 143.48384905,
@@ -251,8 +244,7 @@ handlers.getMap = function(guid) {
 //   }
 // ]});
 
-// getMap('jf90j3fo7');
-module.exports = handlers;
+// handlers.getMap('jf90j3fo7');
 
 
 
