@@ -69,7 +69,7 @@ app.get('/signup', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
 });
 
-app.post('/signup', function (req, res) {
+app.post('/facebook', function (req, res) {
   res.redirect('/auth/facebook');
 });
 
