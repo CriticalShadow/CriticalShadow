@@ -1,11 +1,12 @@
 # VagaBond
 ----
-Created by Team CriticalShadow:
+Created by CriticalShadow: 
 
-[Henry Wong](https://github.com/henryw4k)
-[Neil Lokare](https://github.com/nlokare)
-[Steven Williams](https://github.com/radiobeat33)
-[Wes Smyth](https://github.com/wesleysmyth)
+The Team: <br />
+[Henry Wong](https://github.com/henryw4k) <br />
+[Neil Lokare](https://github.com/nlokare) <br />
+[Steven Williams](https://github.com/radiobeat33) <br />
+[Wes Smyth](https://github.com/wesleysmyth) <br />
 
 #### Wait, so... what's Vagabond?
 Vagabond is a map curator designed to help you make the most of your free time with user generated maps. Looking to visit all the historical landmarks in a given city? Got your pub-crawl crew assembled? Our extensive collection of maps are handcrafted by the experts who would know best, YOU! 
@@ -22,6 +23,6 @@ Provide code examples and explanations of how to get the project.
 
 #### Technologies/Stack Used:
 
-Front-End: jQuery, Angular.js
-Back-End: Node.js, Express
-Database: MySQL
+Front-End: jQuery, Angular.js <br />
+Back-End: Node.js, Express <br />
+Database: MySQL <br />
