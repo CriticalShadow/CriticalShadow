@@ -72,6 +72,18 @@ app.get('/myMap', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/myMap.html'));
 });
 
+//MyMap specific map
+app.get('/myMap/user', function (req, res) {
+  // res.sendFile(path.join(__dirname, '/../client/myMap.html'));
+  console.log('req', req);
+  console.log('req.cookies.u_id', req.cookies.u_id);
+  handlers.getUserMaps(req.cookies.u_id)
+    .then(function(map) {
+      console.log('sending map from server');
+      res.send(map);
+    })
+});
+
 //createMaps page for individual users
 app.route('/createMaps')
   .get(function (req, res) {

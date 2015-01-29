@@ -143,6 +143,8 @@ handlers.setMap = function (map) {
 };
 
 handlers.getMap = function (guid) {
+
+  return new Promise(function (resolve, reject) {
   var wholeMap = {};
   wholeMap.locations = [];
 
@@ -198,10 +200,9 @@ handlers.getMap = function (guid) {
                     if (index === maplocations.length - 1) {
                       // need to change this implementaion!  Returning the correct data, but need a better
                       // than setTimeout
-                      setTimeout(function () {
-                        console.log('wholeMap', wholeMap);
-                        return wholeMap;
-                      }, 100);
+                      // setTimeout(function () {
+                        resolve(wholeMap);
+                      // }, 100);
                     }
                   })
                 } else {
@@ -214,6 +215,38 @@ handlers.getMap = function (guid) {
       });
     }
   });
+  });
+};
+
+handlers.getUserMaps = function(userId) {
+
+  return new Promise(function (resolve, reject) {
+    var allUserMaps = [];
+
+    db.Map.findAll({ 
+      where: {
+        UserId: userId
+      }
+    })
+    .complete(function(err, maps) {
+      console.log('got all the maps for the user with the user id ' + userId);
+      // console.log('maps', maps);
+      var count = 0;
+      maps.forEach(function(map) {
+        handlers.getMap(map.dataValues.guid)
+        .then(function(map) {
+          // console.log('results', results);
+          allUserMaps.push(map);
+          count++;
+          if (count === maps.length) {
+            console.log('allUserMaps', allUserMaps);
+            resolve(allUserMaps);
+          }
+        });
+      });
+    });
+  });
+
 };
 
 module.exports = handlers;
@@ -250,6 +283,8 @@ module.exports = handlers;
 // ]});
 
 // handlers.getMap('a5298');
+
+handlers.getUserMaps(2);
 
 
 

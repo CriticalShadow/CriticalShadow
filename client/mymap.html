@@ -1,7 +1,61 @@
 <!DOCTYPE html>
 <html>
 	<head>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<title>myMap</title>
 	</head>
-	<body>Coming Soon</body>
+	<body>
+   <form>
+     <button type="button" onclick="getUserMaps()">
+       Retrieve my maps!
+     </button>
+   </form> 
+   <script>
+   function getUserMaps() {
+    var userId = parseInt(document.cookie.split('=')[1]);
+    if (typeof userId !== 'number') {
+      console.log('user id is not a number');
+      return;
+    } else {
+      console.log('making ajax request from client')
+      $.ajax({
+        type: 'GET',
+        url: '/myMap/user',
+        data: userId,
+        success: function(allMaps){
+          console.log(allMaps);
+          console.log('Successful GET!');
+          for (var i = 0; i < allMaps.length; i++) {
+            var link = document.createElement('a');
+            $(link).attr('href', '#').css('display', 'block');
+            link.innerText = 'Click here to see the map:  ' + allMaps[i].map.name;
+            $('body').append(link);
+          }
+        },
+        error: function(){
+          console.log('GET Error');
+        }
+      });
+    }
+   }
+
+   function getMap(guid) {
+    console.log('gone');
+    // var guid = guid;
+    $.ajax({
+      type: 'GET',
+      url: '/myMap/' + guid,
+      // dataType: 'application/json',
+      success: function(data){
+        console.log(data);
+        console.log('Successful GET!');
+      },
+      error: function(){
+        console.log('GET Error');
+      }
+    });
+   }
+   </script>
+  </body>
 </html>
