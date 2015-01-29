@@ -73,9 +73,7 @@
     // GLOBAL DATA OBJECT TO BE SENT TO SERVER
     var data = {
       mapName: null,
-      Guid: null,
-      userID: null,
-      location: [] // array of objects contains points. 
+      locations: [] // array of objects contains points. 
     };
     
     // Note: need to run a server for geoFindMe()
@@ -255,7 +253,7 @@
         pointObj['address'] = $('.pointAddr'+i).val();
         pointObj['desc'] = $('.in_text'+i).val();
 
-        data.location.push(pointObj);
+        data.locations.push(pointObj);
       }
       data.mapName = $('#mapTit').val();
 
@@ -263,7 +261,7 @@
 
       $.ajax({
           type: "POST",
-          url: './createMaps',
+          url: '/createMaps',
           data: JSON.stringify(data),
           success: function(){
             console.log('Successful POST!');
