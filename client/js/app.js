@@ -20,8 +20,4 @@ var app = angular.module('app', ['ui.router', 'ngFx'])
 
 		// $scope.a = 5;
 		// $scope.b = 2;
-		// $scope.data = {
-		// 	name: 'steven',
-		// 	age: 28
-		// };
 	});
