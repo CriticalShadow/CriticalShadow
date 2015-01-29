@@ -63,8 +63,13 @@ app.get('/', function (req, res) {
 });
 
 //View Example page
-app.get('/mymap', function (req, res) {
-  res.sendFile(path.join(__dirname, '/../client/mymap.html'));
+app.get('/example', function (req, res) {
+  res.sendFile(path.join(__dirname, '/../client/example.html'));
+});
+
+//MyMap page
+app.get('/myMap', function (req, res) {
+  res.sendFile(path.join(__dirname, '/../client/myMap.html'));
 });
 
 //createMaps page for individual users
