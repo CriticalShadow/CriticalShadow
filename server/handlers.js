@@ -56,8 +56,8 @@ handlers.getUser = function (user) {
 };
 
 handlers.setMap = function (map) {
-  var name = map.name;
-  var guid = map.guid;
+  var name = map.mapName;
+  var guid = map.Guid;
   var UserId = map.UserId;
   var locations = map.locations;
   var mapResults;
