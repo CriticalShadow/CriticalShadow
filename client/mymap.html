@@ -23,13 +23,13 @@
         type: 'GET',
         url: '/myMap/user',
         data: userId,
-        success: function(allMaps){
-          console.log(allMaps);
+        success: function(userMaps){
+          console.log(userMaps);
           console.log('Successful GET!');
-          for (var i = 0; i < allMaps.length; i++) {
+          for (var i = 0; i < userMaps.length; i++) {
             var link = document.createElement('a');
-            $(link).attr('href', '#').css('display', 'block');
-            link.innerText = 'Click here to see the map:  ' + allMaps[i].map.name;
+            $(link).attr('href', '/maps/' + userMaps[i].map.guid).css('display', 'block');
+            link.innerText = 'Click here to see the map:  ' + userMaps[i].map.name;
             $('body').append(link);
           }
         },
@@ -45,7 +45,7 @@
     // var guid = guid;
     $.ajax({
       type: 'GET',
-      url: '/myMap/' + guid,
+      url: '/maps/' + guid,
       // dataType: 'application/json',
       success: function(data){
         console.log(data);

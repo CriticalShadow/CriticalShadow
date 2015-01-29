@@ -63,6 +63,8 @@ handlers.setMap = function (map) {
   var mapResults;
   var locationsResults = [];
 
+  console.log(map);
+
   // create map
   db.Map.find({ where: {
     guid: guid
@@ -115,7 +117,7 @@ handlers.setMap = function (map) {
                         console.log('MapLocationdata', maplocdata);
                         // store the contents for the specific map location
                         db.MapLocationContent.create({
-                          title: locations[index].title,
+                          title: locations[index].name,  // for now, this will be the same as the name stored in the locations table, however, eventually the locations stored in the locations table should be separate from each map location
                           description: locations[index].desc,
                           address: locations[index].address,
                           MapLocationLocationId: maplocdata.LocationId,
@@ -130,7 +132,33 @@ handlers.setMap = function (map) {
                     });
                   });
                 } else { // if the location already exists
-                  console.log('location ' + location[index].name + ' already exists');
+                  console.log('location ' + locations[index].name + ' already exists');
+                  // here we are skipping the creation of the location because it already exists in the db
+                  db.MapLocation.create({
+                      MapId: mapResults.dataValues.id,
+                      LocationId: location.dataValues.id
+                    })
+                    .complete(function (err, maplocdata) {
+                      if (err) {
+                        console.log(err);
+                        return err;
+                      } else {
+                        console.log('MapLocationdata', maplocdata);
+                        // store the contents for the specific map location
+                        db.MapLocationContent.create({
+                          title: locations[index].name,  // for now, this will be the same as the name stored in the locations table, however, eventually the locations stored in the locations table should be separate from each map location
+                          description: locations[index].desc,
+                          address: locations[index].address,
+                          MapLocationLocationId: maplocdata.LocationId,
+                          mapOrder: index
+                        }).complete(function (err, maplocationcontent) {
+                          if (err) {
+                            console.log(err);
+                            return err;
+                          }
+                        })
+                      }
+                    });
                 }
               });
             })(i);
@@ -282,9 +310,9 @@ module.exports = handlers;
 //   }
 // ]});
 
-// handlers.getMap('a5298');
+// handlers.getMap('6074f');
 
-handlers.getUserMaps(2);
+// handlers.getUserMaps(2);
 
 
 
