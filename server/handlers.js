@@ -89,8 +89,8 @@ handlers.setMap = function (map) {
             (function(index) {
               db.Location.find({ where: {
                 name: locations[index].name,
-                latitude: locations[index].latitude,
-                longitude: locations[index].longitude
+                latitude: locations[index].lat,
+                longitude: locations[index].lng
               }})
               .complete(function (err, location) {
                 if (err) { 
@@ -99,8 +99,8 @@ handlers.setMap = function (map) {
                 } else if (location === null) { // if location does not exist we create the location
                   db.Location.create({
                     name: locations[index].name,
-                    latitude: locations[index].latitude,
-                    longitude: locations[index].longitude
+                    latitude: locations[index].lat,
+                    longitude: locations[index].lng
                   }).complete(function (err, locationdata) {
                     // assign the MapLocation join table the correct MapId and Location Id for the specific location
                     db.MapLocation.create({
@@ -116,7 +116,7 @@ handlers.setMap = function (map) {
                         // store the contents for the specific map location
                         db.MapLocationContent.create({
                           title: locations[index].title,
-                          description: locations[index].description,
+                          description: locations[index].desc,
                           address: locations[index].address,
                           MapLocationLocationId: maplocdata.LocationId,
                           mapOrder: index
@@ -182,8 +182,8 @@ handlers.getMap = function (guid) {
                 if (err) {
                   console.log('Error returning the location from the locations table', err); 
                 } else if (typeof location === 'object') {
-                  wholeMap.locations[index].latitude = location.latitude;
-                  wholeMap.locations[index].longitude = location.longitude;
+                  wholeMap.locations[index].lat = location.latitude;
+                  wholeMap.locations[index].lng = location.longitude;
                   db.MapLocationContent.find({ 
                     where: {
                       MapLocationLocationId: location.dataValues.id
@@ -192,7 +192,7 @@ handlers.getMap = function (guid) {
                   .complete(function (err, locationcontent) {
                     wholeMap.locations[index].title = locationcontent.dataValues.title;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
-                    wholeMap.locations[index].description = locationcontent.dataValues.description;
+                    wholeMap.locations[index].desc = locationcontent.dataValues.description;
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
                     wholeMap.locations[index].mapOrder = locationcontent.dataValues.mapOrder;
                     if (index === maplocations.length - 1) {
@@ -249,7 +249,7 @@ module.exports = handlers;
 //   }
 // ]});
 
-handlers.getMap('a5298');
+// handlers.getMap('a5298');
 
 
 
