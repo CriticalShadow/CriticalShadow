@@ -67,6 +67,7 @@
 
     var global_lat, global_lon;
     var geocoder = new google.maps.Geocoder();
+    var infowindow = new google.maps.InfoWindow();
     var map;
     var pointCounter = 0;
 
@@ -116,29 +117,34 @@
       
       //************** CLICK LISTENER ****************//
       google.maps.event.addListener(map, 'click', function (event) {
-          //placeMarker(event.latLng);
           var latitude = event.latLng.lat();
           var longitude = event.latLng.lng();
-          //console.log(latitude+','+longitude);
-          var asdf = codeLatLng(latitude+','+longitude);
-          console.log(asdf);
-
-          var marker = new google.maps.Marker({
-            position: event.latLng,
-            map: map
-          });
-
-          // var nameParse = function(address){
-          // var temp = address.split(',');
-          // return temp[0];
-          //  }
+          codeLatLng(latitude, longitude, function(address_data){
+       
+          var nameParse = function(address){
+            console.log(address);
+            var temp = address.split(',');
+            return temp[0];
+          }
 
 
           // TODO: POINT & CLICK
-          // $('.div_container').append(
-          // '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(input)+'\"+></input>'+
-          // '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
-          // );//note: pointCounter++ is so the next one with have +1 index.
+          $('.div_container').append(
+          '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input>'+
+          '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
+          );//note: pointCounter++ is so the next one with have +1 index.
+
+
+            
+          });
+          //var ex = infowindow;
+          //address_data = infowindow.content;//the current content.
+          //console.log(JSON.stringify(infowindow));
+          // var marker = new google.maps.Marker({
+          //   position: event.latLng,
+          //   map: map
+          // });
+
 
       });
 
@@ -211,25 +217,28 @@
 
     // google geoCoder. Returns an address from waypoints. 
     // Quotas: 5 per second and 2500 per day. 
-    function codeLatLng(lattLon) {
-      var input = lattLon;
-      // var input = document.getElementById('latlng').value;
-      var latlngStr = input.split(',', 2);
-      //console.log("evaluated: "+ latlngStr);
-      var lat = parseFloat(latlngStr[0]);
-      var lng = parseFloat(latlngStr[1]);
+    function codeLatLng(latt, Lon, cb) {
+      // var input = lattLon;
+      // // var input = document.getElementById('latlng').value;
+      // var latlngStr = input.split(',', 2);
+      // //console.log("evaluated: "+ latlngStr);
+      // var lat = parseFloat(latlngStr[0]);
+      // var lng = parseFloat(latlngStr[1]);
+      var lat = latt;
+      var lng = Lon;
       var latlng = new google.maps.LatLng(lat, lng);
+      //var addr='sup mang';
 
       geocoder.geocode({'latLng': latlng}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[1]) {
-            // marker = new google.maps.Marker({
-            //     position: latlng,
-            //     map: map
-            // });
-             var addr = (results[1].formatted_address).toString();
-             console.log(addr);
-             return addr.toString();
+            marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+            });
+            infowindow.setContent(results[1].formatted_address);
+            infowindow.open(map, marker);
+            cb(results[1].formatted_address);
           } else {
             alert('No results found');
           }
