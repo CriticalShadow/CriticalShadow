@@ -256,13 +256,14 @@
         data.locations.push(pointObj);
       }
       data.mapName = $('#mapTit').val();
+      console.log(data);
 
       //*****************AJAX POST HERE*****************//
 
       $.ajax({
           type: "POST",
           url: '/createMaps',
-          data: JSON.stringify(data),
+          data: data,
           success: function(){
             console.log('Successful POST!');
           },
