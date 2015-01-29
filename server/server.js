@@ -87,11 +87,9 @@ app.route('/createMaps')
     res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
   })
   .post(function (req, res) {
-    var userId = req.cookies.u_id; //identifies the UserId
-    var guid = Guid.v4().slice(0, 5);
     var map = req.body; //map data from client
-    map.UserId = userId; //adds UserId property
-    map.Guid = guid;
+    map.UserId = req.cookies.u_id; //adds UserId property
+    map.Guid = Guid.v4().slice(0, 5);
     handlers.setMap(map);  //Adds this map to the database
     res.redirect('/');
   });
