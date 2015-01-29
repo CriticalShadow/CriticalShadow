@@ -72,15 +72,11 @@ app.get('/myMap', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/myMap.html'));
 });
 
-//MyMap specific map
+//MyMap request for all user maps
 app.get('/myMap/user', function (req, res) {
-  // res.sendFile(path.join(__dirname, '/../client/myMap.html'));
-  console.log('req', req);
-  console.log('req.cookies.u_id', req.cookies.u_id);
   handlers.getUserMaps(req.cookies.u_id)
-    .then(function(map) {
-      console.log('sending map from server');
-      res.send(map);
+    .then(function(maps) {
+      res.send(maps);
     })
 });
 
