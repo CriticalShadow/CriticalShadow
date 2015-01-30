@@ -1,73 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-  <meta charset="utf-8">
-
-  <style>
-  #map-canvas {
-    clear: both;
-    float: left;
-    margin-top: 20px;
-    width: 100%;
-    height: 400px;
-    background-color: #CCC;
-  }
-  .controls {
-    margin-top: 16px;
-    border: 1px solid transparent;
-    border-radius: 2px 0 0 2px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    height: 32px;
-    outline: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  }
-
-  #pac-input {
-    background-color: #fff;
-    border-color: #ff0000;
-    padding: 0 11px 0 13px;
-    width: 150px;
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-    text-overflow: ellipsis;
-  }
-
-  #pac-input:focus {
-    border-color: #ff0000;
-    margin-left: -1px;
-    padding-left: 14px;  /* Regular padding-left + 1. */
-    width: 300px;
-  }
-
-  .pac-container {
-    font-family: Roboto;
-  }
-
-  #type-selector {
-    color: #fff;
-    background-color: #4d90fe;
-    padding: 5px 11px 0px 11px;
-  }
-
-  #type-selector label {
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 300;
-  }
-  </style>
-  
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="utf-8">  
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
+  <link href='/css/styles.css' rel='stylesheet' />
   <script>
     $(document).ready(function(){
 
     var global_lat, global_lon;
     var geocoder = new google.maps.Geocoder();
-    var infowindow = new google.maps.InfoWindow();
+    var infowindow = new google.maps.InfoWindow({
+      maxWidth: 100
+    });
     var map;
     var pointCounter = 0;
 
@@ -104,14 +51,21 @@
 
      
     function initialize() {
-      //var markerCount = 0;
-      
       var map_canvas = document.getElementById('map-canvas');
       var myLatlng = new google.maps.LatLng(global_lat, global_lon);
       var map_options = {
         center: myLatlng,
         zoom: 13, 
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP, 
+        panControl: true,
+          panControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_TOP
+        },
+        zoomControl: true,
+        zoomControlOptions: {
+          style: google.maps.ZoomControlStyle.LARGE,
+          position: google.maps.ControlPosition.RIGHT_TOP
+        }
       }
       map = new google.maps.Map(map_canvas, map_options)
       
@@ -120,41 +74,22 @@
           var latitude = event.latLng.lat();
           var longitude = event.latLng.lng();
           codeLatLng(latitude, longitude, function(address_data){
-       
-          var nameParse = function(address){
-            console.log(address);
-            var temp = address.split(',');
-            return temp[0];
-          }
+            var nameParse = function(address){
+              console.log(address);
+              var temp = address.split(',');
+              return temp[0];
+            }
 
-
-          // TODO: POINT & CLICK
-          $('.div_container').append(
-          '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input>'+
-          '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
-          );//note: pointCounter++ is so the next one with have +1 index.
-
-
-            
+            // TODO: POINT & CLICK
+            $('.div_container').append(
+            '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input>'+
+            '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
+            );//note: pointCounter++ is so the next one with have +1 index.
           });
-          //var ex = infowindow;
-          //address_data = infowindow.content;//the current content.
-          //console.log(JSON.stringify(infowindow));
-          // var marker = new google.maps.Marker({
-          //   position: event.latLng,
-          //   map: map
-          // });
-
-
       });
 
     //************** SEARCH BAR FUNCTIONALITY ****************//
-      
-      var input = /** @type {HTMLInputElement} */(
-          document.getElementById('pac-input'));
-      // note: to put search bar inside the map. 
-      // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); 
-
+      var input = (document.getElementById('pac-input'));
       var searchBox = new google.maps.places.SearchBox(
         /** @type {HTMLInputElement} */(input));
 
@@ -175,59 +110,33 @@
             map: map,
             position: place.geometry.location
           });
+          infowindow.setContent(input.value);
+          infowindow.open(map, marker);
 
-        // var locObj = function(){
-        //   data.location.push({
-        //     name: nameParse(input.value),
-        //     lat: place.geometry.location.lat(),
-        //     lng: place.geometry.location.lng(),
-        //     address: input.value,
-        //     desc: null,
-        //     title: null
-        //   });
-        //   data.mapName = $('#mapTit').val();
-        // };
-
-        var nameParse = function(address){
-          var temp = address.split(',');
-          return temp[0];
-        }
-
-        // locObj();
+          var nameParse = function(address){
+            var temp = address.split(',');
+            return temp[0];
+          }
 
         $('.div_container').append(
           '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input>'+
           '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input.value+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+place.geometry.location.lat()+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+place.geometry.location.lng()+'></input></div>'
           );//note: pointCounter++ is so the next one with have +1 index.
- 
-
-        //console.log(data);
-        // console.log("PLACE.GEOMETRY.LOCATION: "+place.geometry.location);
         //bounds.extend(place.geometry.location);
-        }
+        }// for
       });
-
       // google.maps.event.addListener(map, 'bounds_changed', function() {
       //   var bounds = map.getBounds();
       //   searchBox.setBounds(bounds);
       // });
     }//initialize()
 
-
-
-    // google geoCoder. Returns an address from waypoints. 
+    // google geoCoder. Returns a physical address from latt and lng. 
     // Quotas: 5 per second and 2500 per day. 
     function codeLatLng(latt, Lon, cb) {
-      // var input = lattLon;
-      // // var input = document.getElementById('latlng').value;
-      // var latlngStr = input.split(',', 2);
-      // //console.log("evaluated: "+ latlngStr);
-      // var lat = parseFloat(latlngStr[0]);
-      // var lng = parseFloat(latlngStr[1]);
       var lat = latt;
       var lng = Lon;
       var latlng = new google.maps.LatLng(lat, lng);
-      //var addr='sup mang';
 
       geocoder.geocode({'latLng': latlng}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
@@ -251,8 +160,19 @@
 
     google.maps.event.addDomListener(window, 'load', geoFindMe);
 
-    
+    //map title validity checker. 
+    function submitform() {
+      var f = document.getElementsByTagName('form')[0];
+      if(f.checkValidity()) {
+        return true;
+      } else {
+        return false;
+
+      }
+    }
+    //*****************SUBMIT BUTTON*********************//
     $('.pushToServer').click(function(){
+      if(submitform()){
       var points_length = $('.onePoint').length;
       for( var i = 0; i < points_length; i++ ){
         var pointObj = {};
@@ -267,8 +187,6 @@
       data.mapName = $('#mapTit').val();
       console.log(data);
 
-      //*****************AJAX POST HERE*****************//
-
       $.ajax({
           type: "POST",
           url: '/createMaps',
@@ -280,48 +198,29 @@
             console.log('POST Error');
           }
       });
+    } else {
+      alert('Please Enter a Map Title');
+    }
     });
-
-
-     // $('.div_container').append(
-     //      '<div class="onePoint"><input class="in_name" value=\"'+ nameParse(input.value)+'\"+></input>'+
-     //      '<textarea class="in_text"></textarea><br></div>'
-     //      );
-
     });// DOM ready
-
   </script>
-  <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
-  <link href='/css/styles.css' rel='stylesheet' />
   </head>
-
   <body>
-    <div class='container'>
-      <div class='row'>
-
-
-        <div class="col-md-2 createNav">
-          <p> Map Title </p>
-          <input id="mapTit" type='text' placeholder='Enter map title here' required>
-          <br />
-          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-        <hr>
-        <br>
-        <div class='div_container'></div>
-        </div>
-
-
-        <div class='col-md-10'>
+    <div class='containerMap'>
           <div id="map-canvas"></div> 
+        <div class="col-md-2 sidebar">
           <form>
+            <p><strong>Create Your Map!</strong></p>
+            <input id="mapTit" type='text' placeholder='Enter Map Title' required>
+            <br />
+            <input id="pac-input" class="controls" type="text" placeholder="Enter Location">
+          <hr>
+          <br>
+          <div class='div_container'></div>
             <button type='button' class="pushToServer">Submit</button>
             <button type='reset' value="Reset">Reset</button>
           </form>
         </div>
-      </div>
-        
-
-
     </div>
   </body>
 </html>
