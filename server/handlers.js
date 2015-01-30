@@ -23,12 +23,10 @@ handlers.setUser = function (username) {
           if (err) { 
             console.log(err)
           } else {
-            // console.log(user);
             resolve(user);
           }
         });  
-      } else { // if found, tell the user that the name is already taken
-        // console.log(user);
+      } else { 
         resolve(user);
       }
     });
@@ -274,7 +272,6 @@ handlers.getUserMaps = function(userId) {
       });
     });
   });
-
 };
 
 module.exports = handlers;
@@ -310,9 +307,6 @@ module.exports = handlers;
 //   }
 // ]});
 
-// handlers.getMap('6074f');
-
-// handlers.getUserMaps(2);
 
 
 
