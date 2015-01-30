@@ -5,9 +5,9 @@
       <h1>{{title}}</h1>
       <small class="scroll quiet">Scroll &#x25BE;</small>
     </section>
-    <section ng-repeat="entry in coords" id="{{entry.id}}">
+    <section ng-repeat="entry in locations" id="{{entry.name}}">
       <h3>{{entry.name}}</h3>
-      <p>{{entry.description}}</p>
+      <p>{{entry.desc}}</p>
     </section>
     <section id="dummy"></section>
   </div>

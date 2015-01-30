@@ -191,8 +191,9 @@
           type: "POST",
           url: '/createMaps',
           data: data,
-          success: function(){
+          success: function (res){
             console.log('Successful POST!');
+            console.log(res);
           },
           error: function(){
             console.log('POST Error');
