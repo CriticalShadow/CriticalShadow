@@ -16,8 +16,7 @@ var app = angular.module('app', ['ui.router', 'ngFx'])
 		  })
 	})
 	.controller('mainCtrl', function($scope, $location){
-		// testing
-
-		// $scope.a = 5;
-		// $scope.b = 2;
+		$scope.templateHide = function(){
+			$('.template').hide();
+		}
 	});
