@@ -15,13 +15,13 @@ var setId = function (newId) {
       layer.setIcon(L.mapbox.marker.icon({
         'marker-color': '#FF2249',
         'marker-size': 'large',
-        'marker-symbol': 'college'
+        'marker-symbol': 'marker-stroked'
       }));
     } else {
       layer.setIcon(L.mapbox.marker.icon({
         'marker-color': '#404040',
         'marker-size': 'large',
-        'marker-symbol': 'college'
+        'marker-symbol': 'marker-stroked'
       }));
     }
   });
@@ -36,9 +36,8 @@ var setId = function (newId) {
   currentId = newId;
 };
 
-setId('cover');
-
 var onScroll = _.debounce(function (e) {
+  e.preventDefault();
   var narrativeHeight = narrative.offsetHeight;
   var newId = currentId;
   // Find the section that's currently scrolled-to.
@@ -52,4 +51,5 @@ var onScroll = _.debounce(function (e) {
   setId(newId);
 }, 50);
 
+setId('cover');
 narrative.onscroll = onScroll;

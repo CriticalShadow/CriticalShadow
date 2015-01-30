@@ -65,7 +65,7 @@ app.get('/', function (req, res) {
 
 //View Example page now using Jade templates
 app.get('/example', function (req, res) {
-  res.render('activemap', { title: 'Bootcamps in San Francisco'});
+  res.render('example', { title: 'Bootcamps in San Francisco'});
 });
 
 //MyMap page
@@ -76,17 +76,51 @@ app.get('/myMap', function (req, res) {
 //MyMap request for all user maps
 app.get('/myMap/user', function (req, res) {
   handlers.getUserMaps(req.cookies.u_id)
-    .then(function(maps) {
+    .then(function (maps) {
       res.send(maps);
-    })
+    });
 });
 
-// app.get('/dashboard/:user/', function (req, res) {
-//   handlers.getUserMaps(req.cookies.u_id)
-//     .then(function (userMaps) {
-//       res.
-//     });
-// });
+//Active Map View
+app.get('/maps/:guid', function (req, res) {
+  // handler.getMap(req.params.guid)
+  //   .then(function (mapData) {
+      res.render('activemap', {name: 'Bootcamps', guid: 'jf90j3fo7', UserId: 1, locations: [
+          {
+            name: 'Hack Reactor', // unique location name in the locations table
+            latitude: 37.783748,
+            longitude: 122.40904599999999,
+            description: 'This is the longest description for the first location, it is just amazing, omg...',
+            address: '944 Market Street #8, San Francisco, CA 94102',
+            title: 'Number one user input title' // this is the user input
+          },
+          {
+            name: 'Dev Bootcamp',
+            latitude: 37.784585,
+            longitude: 122.39721400000002,
+            description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
+            address: '113 8th Avenue, San Francisco, CA 94019',
+            title: 'Number two user input title'
+          },
+          {
+            name: 'MakerSquare',
+            latitude: 37.787496,
+            longitude: 122.39990899999998,
+            description: 'yo dude, here\'s my description',
+            address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
+            title: 'Number three user input title'
+          }
+        ]}
+    );
+});
+
+//User Dashboard
+app.get('/dashboard', function (req, res) {
+  handlers.getUserMaps(req.cookies.u_id)
+    .then(function (userMaps) {
+      res.render('dashboard', userMaps);
+    });
+});
 
 //createMaps page for individual users
 app.route('/createMaps')
@@ -103,17 +137,15 @@ app.route('/createMaps')
     res.send(guid);
   });
 
-//Login routes
-app.route('/login')
-  .post(function (req, res) {
-    res.redirect('/auth/facebook');
-  });
+//Login
+app.post('/login', function (req, res) {
+  res.redirect('/auth/facebook');
+});
 
-//Sign up routes
-app.route('/signup')
-  .post(function (req, res) {
-    res.redirect('/auth/facebook');
-  });
+//Sign up
+app.post('/signup', function (req, res) {
+  res.redirect('/auth/facebook');
+});
 
 app.listen(port, function () {
   console.log("Listening on " + port);
