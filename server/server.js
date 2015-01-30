@@ -98,18 +98,18 @@ app.route('/createMaps')
 
 //Login routes
 app.route('/login')
-  .get(function (req, res) {
-    res.sendFile(path.join(__dirname, '/../client/templates/login.html'));
-  })
+  // .get(function (req, res) {
+  //   res.sendFile(path.join(__dirname, '/../client/templates/login.html'));
+  // })
   .post(function (req, res) {
     res.redirect('/auth/facebook');
   });
 
 //Sign up routes
 app.route('/signup')
-  .get(function (req, res) {
-    res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
-  })
+  // .get(function (req, res) {
+  //   res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
+  // })
   .post(function (req, res) {
     res.redirect('/auth/facebook');
   });
