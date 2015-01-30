@@ -7,17 +7,14 @@ angular.module('activemap', ['ngAnimate', 'ngFx'])
     $scope.getMap = function (guid) {
       $scope.fetch(guid).then(function (mapData) {
         // This is just some basic scaffolding for all of the data that is required to render a map.
-        $scope.content = mapData.content;
-        $scope.coords = mapData.coordinates;
-        $scope.icon = mapData.icon;
-        $scope.title = mapData.title;
-        $scope.id = mapData.id;
+        $scope.locations = mapData.locations;
+        $scope.mapName = mapData.mapName;
       });
     };
 
     $scope.createCoordinates = function () {
-      $scope.coords.forEach(function (locationData) {
-        $scope.places.features.push({ geometry: { type: "Point", coordinates: [locationData.longitude, locationData.latitude]},
+      $scope.locations.forEach(function (locationData) {
+        $scope.places.features.push({ geometry: { type: "Point", coordinates: [locationData.lng, locationData.lat]},
           properties: { id: locationData.name, zoom: 14 }, type: 'Feature' });
       });
       $scope.map = L.mapbox.map('map', 'nlokare.l114oiif', { zoomControl: false });

@@ -16,8 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
-
 app.use(express.static(__dirname + '/../client'));
+app.set('views', '../views');
+app.set('view engine', 'jade'); //templating engine for dashboard and active map view
 
 var FACEBOOK_APP_ID = 922911927720037;
 var FACEBOOK_APP_SECRET = '513872ee43b515e579d4133a0d7e4086';
@@ -62,9 +63,9 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname, 'index.html');
 });
 
-//View Example page
+//View Example page now using Jade templates
 app.get('/example', function (req, res) {
-  res.sendFile(path.join(__dirname, '/../client/example.html'));
+  res.render('activemap', { title: 'Bootcamps in San Francisco'});
 });
 
 //MyMap page
@@ -80,6 +81,13 @@ app.get('/myMap/user', function (req, res) {
     })
 });
 
+// app.get('/dashboard/:user/', function (req, res) {
+//   handlers.getUserMaps(req.cookies.u_id)
+//     .then(function (userMaps) {
+//       res.
+//     });
+// });
+
 //createMaps page for individual users
 app.route('/createMaps')
   .get(function (req, res) {
@@ -87,29 +95,22 @@ app.route('/createMaps')
     res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
   })
   .post(function (req, res) {
-    var userId = req.cookies.u_id; //identifies the UserId
     var guid = Guid.v4().slice(0, 5);
     var map = req.body; //map data from client
-    map.UserId = userId; //adds UserId property
+    map.UserId = req.cookies.u_id; //adds UserId property
     map.Guid = guid;
     handlers.setMap(map);  //Adds this map to the database
-    res.redirect('/');
+    res.send(guid);
   });
 
 //Login routes
 app.route('/login')
-  // .get(function (req, res) {
-  //   res.sendFile(path.join(__dirname, '/../client/templates/login.html'));
-  // })
   .post(function (req, res) {
     res.redirect('/auth/facebook');
   });
 
 //Sign up routes
 app.route('/signup')
-  // .get(function (req, res) {
-  //   res.sendFile(path.join(__dirname, '/../client/templates/signup.html'));
-  // })
   .post(function (req, res) {
     res.redirect('/auth/facebook');
   });

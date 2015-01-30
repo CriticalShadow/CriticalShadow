@@ -1,28 +1,14 @@
-<div id="map"></div>
-<article id="narrative">
-  <div class="sections prose">
-    <section id="cover" class="cover active">
-      <h1>{{title}}</h1>
-      <small class="scroll quiet">Scroll &#x25BE;</small>
-    </section>
-    <section ng-repeat="entry in locations" id="{{entry.name}}">
-      <h3>{{entry.name}}</h3>
-      <p>{{entry.desc}}</p>
-    </section>
-    <section id="dummy"></section>
-  </div>
-</article>
-<div>
-<script>
 var narrative = document.getElementById('narrative');
 var sections = narrative.getElementsByTagName('section');
 var currentId = '';
 
 var setId = function (newId) {
+  // If the ID hasn't actually changed, don't do anything
   if (newId === currentId) {
     return;
   }
-
+  // Otherwise, iterate through layers, setting the current
+  // marker to a different color and zooming to it.
   placesLayer.eachLayer(function (layer) {
     if (layer.feature.properties.id === newId) {
       map.setView(layer.getLatLng(), layer.feature.properties.zoom || 16);
@@ -39,7 +25,7 @@ var setId = function (newId) {
       }));
     }
   });
-
+  // highlight the current section
   for (var i = 0; i < sections.length; i++) {
     if (sections[i].id === newId) {
       sections[i].className = 'active'
@@ -55,6 +41,8 @@ setId('cover');
 var onScroll = _.debounce(function (e) {
   var narrativeHeight = narrative.offsetHeight;
   var newId = currentId;
+  // Find the section that's currently scrolled-to.
+  // We iterate backwards here so that we find the topmost one.
   for (var i = sections.length - 1; i >= 0; i--) {
     var rect = sections[i].getBoundingClientRect();
     if (rect.top >= 0 && rect.top <= narrativeHeight) {
@@ -65,4 +53,3 @@ var onScroll = _.debounce(function (e) {
 }, 50);
 
 narrative.onscroll = onScroll;
-</script>
