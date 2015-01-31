@@ -75,10 +75,9 @@ $(document).ready(function () {
         var longitude = event.latLng.lng();
         codeLatLng(latitude, longitude, function (address_data) {
 
-          $('.div_container').append(
-          '<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input>'+
-          '<textarea placeholder="Enter location description here" class="form-control inputSize in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
-          );
+          $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
+            '<textarea placeholder="Enter location description here" class="form-control inputSize2 in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="hiddenLat pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="hiddenLng pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
+          ).hide().appendTo('.div_container').fadeIn();
         });
     });
 
@@ -109,9 +108,9 @@ $(document).ready(function () {
         markersArray.push(marker);
         setBounds();
 
-      $('.div_container').append(
-        '<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input>'+
-        '<textarea placeholder="Enter location description here" class="inputSize form-control in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input.value+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+place.geometry.location.lat()+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+place.geometry.location.lng()+'></input></div>');//note: pointCounter++ is so the next one with have +1 index.
+      $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
+        '<textarea placeholder="Enter location description here" class="inputSize2 form-control in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input.value+'\"+></input><input type=hidden class="hiddenLat pointLat' + pointCounter +'"value='+place.geometry.location.lat()+'></input><input type=hidden class="hiddenLng pointLng' + pointCounter++ +'"value='+place.geometry.location.lng()+'></input></div>'
+        ).hide().appendTo('.div_container').fadeIn();//note: pointCounter++ is so the next one with have +1 index.
 
         $('#pac-input').val(''); 
         input.value = '';
@@ -218,14 +217,25 @@ $(document).ready(function () {
   }
   });
 
+  $(document).ready(function(){
+  
   //*****************RESET BUTTON*********************//
 
-  $('.resetMap').click(function () {
-    var data = {
-      mapName: null,
-      locations: []
-    };
-    $('.onePoint').fadeOut();
+    $('.resetMap').click(function () {
+      var data = {
+        mapName: null,
+        locations: []
+      };
+      $('.onePoint').fadeOut();
+    });
+
+  //*****************X BUTTON*********************//
+
+    $(document).on('click', 'img.xButton', function () {
+      $(this).closest('.onePoint').fadeOut();
+    });
   });
+
+
 
 });

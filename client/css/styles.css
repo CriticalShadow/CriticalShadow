@@ -126,6 +126,7 @@ p {
 
   .controls {
     margin-top: 16px;
+    margin-bottom: 16px;
     border: 1px solid transparent;
     border-radius: 2px 0 0 2px;
     box-sizing: border-box;
@@ -178,9 +179,13 @@ p {
   }
 
   .inputSize {
-    width: 100%;
+    width: 90%;
+    display: inline-block;
   }
 
+  .inputSize2 {
+    width: 100%;
+  }
   /*Henry's createMap testing*/
   .sidebar {
     z-index: 10;
