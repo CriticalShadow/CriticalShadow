@@ -24,7 +24,7 @@ db.Location = db.sequelize.define('Location', {
 // The MapLocation is the join table between the Map and Location tables
 db.MapLocation = db.sequelize.define('MapLocation', {});
 
-db.MapLocation.sync();
+// db.MapLocation.sync();
 
 // This table will have a foreign key relationship to the MapLocation table's primary key
 db.MapLocationContent = db.sequelize.define('MapLocationContent', {

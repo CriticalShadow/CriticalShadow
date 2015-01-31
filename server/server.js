@@ -83,35 +83,10 @@ app.get('/myMap/user', function (req, res) {
 
 //Active Map View
 app.get('/maps/:guid', function (req, res) {
-  // handler.getMap(req.params.guid)
-  //   .then(function (mapData) {
-      res.render('activemap', {name: 'Bootcamps', guid: 'jf90j3fo7', UserId: 1, locations: [
-          {
-            name: 'Hack Reactor', // unique location name in the locations table
-            latitude: 37.783748,
-            longitude: 122.40904599999999,
-            description: 'This is the longest description for the first location, it is just amazing, omg...',
-            address: '944 Market Street #8, San Francisco, CA 94102',
-            title: 'Number one user input title' // this is the user input
-          },
-          {
-            name: 'Dev Bootcamp',
-            latitude: 37.784585,
-            longitude: 122.39721400000002,
-            description: 'This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. This is a lot of information to handle in one go. ',
-            address: '113 8th Avenue, San Francisco, CA 94019',
-            title: 'Number two user input title'
-          },
-          {
-            name: 'MakerSquare',
-            latitude: 37.787496,
-            longitude: 122.39990899999998,
-            description: 'yo dude, here\'s my description',
-            address: '88 Colin P Kelly Jr St San Francisco, CA 94107 United States',
-            title: 'Number three user input title'
-          }
-        ]}
-    );
+  handlers.getMap(req.params.guid)
+  .then(function (mapData) {
+    res.render('activemap', mapData);
+  });
 });
 
 //User Dashboard
@@ -128,6 +103,7 @@ app.route('/createMaps')
     res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
   })
   .post(function (req, res) {
+    console.log('reqbody', req.body)
     var guid = Guid.v4().slice(0, 8);
     var map = req.body; //map data from client
     map.UserId = req.cookies.u_id; //adds UserId property
