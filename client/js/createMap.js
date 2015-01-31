@@ -199,4 +199,15 @@ $(document).ready(function () {
     swal("Please Enter a Map Title", "Whoops", "warning");
   }
   });
+
+  //*****************RESET BUTTON*********************//
+
+  $('.resetMap').click(function () {
+    var data = {
+      mapName: null,
+      locations: []
+    };
+    $('.onePoint').fadeOut();
+  });
+
 });
