@@ -122,24 +122,18 @@ app.get('/dashboard', function (req, res) {
     });
 });
 
-app.get('/api/:guid', function (req, res){
-  console.log("GUID: ", req.params.guid);
-  var map = handlers.getMap(req.params.guid);
-    console.log(map);
-});
 //createMaps page for individual users
 app.route('/createMaps')
   .get(function (req, res) {
-    var UserId = req.cookies.u_id;
     res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
   })
   .post(function (req, res) {
-    var guid = Guid.v4().slice(0, 5);
+    var guid = Guid.v4().slice(0, 8);
     var map = req.body; //map data from client
     map.UserId = req.cookies.u_id; //adds UserId property
-    map.Guid = guid;
-    handlers.setMap(map);  //Adds this map to the database
-    res.send(guid);
+    map.Guid = guid; //adds a Guid property
+    handlers.setMap(map); //Adds this map to the database
+    res.send(guid); //allows for preview from alert box
   });
 
 //Login
