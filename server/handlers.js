@@ -262,7 +262,8 @@ handlers.getUserMaps = function(userId) {
           count++;
           if (count === maps.length) {
             console.log('allUserMaps', allUserMaps);
-            resolve(allUserMaps);
+            var data = {data: allUserMaps};
+            resolve(data);
           }
         });
       });
