@@ -76,7 +76,7 @@ article {
   color: #fefefe;
 }
 .sections {
-  background:rgba(255,255,255,0.5);
+  background:rgba(255,255,255,0.85);
   width:280px;
 }
 section {
@@ -109,7 +109,8 @@ p {
 }
 
 #dummy {
-  height: 450px;
+  height: 680px;
+  background-color: transparent;
 }
 
 
@@ -206,3 +207,22 @@ p {
   }
   
 
+table.mymaps {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 40px;
+  background-color: whitesmoke;
+  color: #0f0f0f;
+}
+
+table.mymaps a {
+  color: #0f0f0f;
+}
+
+table.mymaps th {
+  text-align: center;
+}
+
+button.createmaps {
+  margin-top: 25px
+}

@@ -14,6 +14,20 @@ html
           a(class='navbar-brand') Vagabond
         div(class='collapse navbar-collapse' id='bs-example-navbar-collapse-1')
           ul(class='nav navbar-nav')
-            li a(href='/createMaps') Create Maps
+            li 
+              a(href='/createMaps') Create Maps
           ul(class='nav navbar-nav navbar-right')
-            li a(href='/del') Log Out
+            li 
+              a(href='/del') Log Out
+    h2 My Maps          
+    table(class='table table-hover mymaps')
+      th Map Name 
+      th URL
+      each map in data
+        tr
+          td!= map.map.name
+          td 
+            a(href='maps/#{map.map.guid}', target='_blank') #{map.map.guid}
+              
+    a(href='/createMaps')
+      button(type='button', class='btn btn-large btn-primary createmaps') Create New Map
