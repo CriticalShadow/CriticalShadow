@@ -13,6 +13,7 @@ $(document).ready(function () {
     mapName: null,
     locations: [] // array of objects contains points. 
   };
+  var markersArray = [];
   
   function geoFindMe () {
     if (!navigator.geolocation){
@@ -34,7 +35,21 @@ $(document).ready(function () {
 
     navigator.geolocation.getCurrentPosition(success, error);
   }
+
+  function setBounds() {
+    var bounds = new google.maps.LatLngBounds();
+    for (var i=0; i < markersArray.length; i++) {
+      bounds.extend(markersArray[i].getPosition());
+    }
+    map.fitBounds(bounds);
+  }
    
+  var nameParse = function (address) {
+    console.log(address);
+    var temp = address.split(',');
+    return temp[0];
+  }
+
   function initialize () {
     var map_canvas = document.getElementById('map-canvas');
     var myLatlng = new google.maps.LatLng(global_lat, global_lon);
@@ -59,11 +74,6 @@ $(document).ready(function () {
         var latitude = event.latLng.lat();
         var longitude = event.latLng.lng();
         codeLatLng(latitude, longitude, function (address_data) {
-          var nameParse = function (address) {
-            console.log(address);
-            var temp = address.split(',');
-            return temp[0];
-          }
 
           $('.div_container').append(
           '<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input>'+
@@ -96,11 +106,8 @@ $(document).ready(function () {
         });
         infowindow.setContent(input.value);
         infowindow.open(map, marker);
-
-        var nameParse = function (address) {
-          var temp = address.split(',');
-          return temp[0];
-        }
+        markersArray.push(marker);
+        setBounds();
 
       $('.div_container').append(
         '<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input>'+
@@ -110,6 +117,14 @@ $(document).ready(function () {
         input.value = '';
       }
     });
+
+    // Bias the SearchBox results towards places that are within the bounds of the
+    // current map's viewport.
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+      var bounds = map.getBounds();
+      searchBox.setBounds(bounds);
+    });
+
   }
 
   // google geoCoder. Returns a physical address from latt and lng. 
@@ -129,6 +144,8 @@ $(document).ready(function () {
 
           infowindow.setContent(results[1].formatted_address);
           infowindow.open(map, marker);
+          markersArray.push(marker);
+          setBounds();  
 
           cb(results[1].formatted_address);
         } else {
@@ -167,6 +184,7 @@ $(document).ready(function () {
     }
     data.mapName = $('#mapTit').val();
     console.log(data);
+    console.log(markersArray);
 
     $.ajax({
         type: "POST",
