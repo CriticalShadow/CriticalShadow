@@ -57,25 +57,24 @@
 		<title>myMap</title>
 	</head>
 	<body class='site-wrapper'>
-   <div class='containerMap'>
-         <div id="map-canvas"></div> 
-       <div class="col-md-4 sidebar">
-         <form>
-         <h3 style="color:white"><center>Dashboard</center></h3>
-         <hr>
-            <div>
-              <button type="button" class='inputSize btn btn-default' onclick="getUserMaps()">
-                Retrieve my maps!
-              </button>
-            </div>
-            <br />
-            <div>
-              <a class='inputSize btn btn-default' href='/createMaps'>
-                Create a map!
-              </a>
-            </div>
-         </form> 
-       </div>
-   </div>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand">Vagabond</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="javascript:getUserMaps();">My Maps</a></li>
+            <li><a href="/createMaps">Create Maps</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/del">Log Out</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
   </body>
 </html>

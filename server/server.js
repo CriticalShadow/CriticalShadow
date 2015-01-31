@@ -146,6 +146,12 @@ app.post('/signup', function (req, res) {
   res.redirect('/auth/facebook');
 });
 
+//Deleting Cookies
+app.get('/del', function (req, res) {
+  res.clearCookie('u_id'); 
+  res.redirect('/');
+});
+
 app.listen(port, function () {
   console.log("Listening on " + port);
 });
