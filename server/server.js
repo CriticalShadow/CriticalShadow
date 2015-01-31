@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser()); //use the cookieParser in routes with req/res.cookies
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/../client'));
 
 app.set('port', process.env.PORT || 3000); //sets the port
 app.set('host', process.env.HOST); //sets the host
@@ -88,7 +88,7 @@ app.get('/maps/:guid', function (req, res) {
 //createMaps page for individual users
 app.route('/createMaps')
   .get(function (req, res) {
-    res.sendFile(path.join(__dirname, '/client/createMaps.html')); //on a get request, send them the client code
+    res.sendFile(path.join(__dirname, '/../client/createMaps.html')); //on a get request, send them the client code
   })
   .post(function (req, res) { //on save
     var guid = Guid.v4().slice(0, 8); //create an 8 digit guid
