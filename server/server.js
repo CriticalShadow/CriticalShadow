@@ -54,7 +54,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
       res.cookie('u_id', user.id);
     })
     .then(function () {
-      res.redirect('/');
+      res.redirect('/myMap');
     });
 });
 
@@ -122,6 +122,11 @@ app.get('/dashboard', function (req, res) {
     });
 });
 
+app.get('/api/:guid', function (req, res){
+  console.log("GUID: ", req.params.guid);
+  var map = handlers.getMap(req.params.guid);
+    console.log(map);
+});
 //createMaps page for individual users
 app.route('/createMaps')
   .get(function (req, res) {

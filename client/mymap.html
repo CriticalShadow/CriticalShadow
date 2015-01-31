@@ -3,59 +3,79 @@
 	<head>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+    // Database functionality
+
+    function getUserMaps() {
+     var userId = parseInt(document.cookie.split('=')[1]);
+     if (typeof userId !== 'number') {
+       console.log('user id is not a number');
+       return;
+     } else {
+       console.log('making ajax request from client')
+       $.ajax({
+         type: 'GET',
+         url: '/myMap/user',
+         data: userId,
+         success: function(userMaps){
+           console.log(userMaps);
+           console.log('Successful GET!');
+           for (var i = 0; i < userMaps.length; i++) {
+             var link = document.createElement('a');
+             $(link).attr('href', '/maps/' + userMaps[i].map.guid).css('display', 'block');
+             link.innerText = 'Click here to see the map:  ' + userMaps[i].map.name;
+             $('body').append(link);
+           }
+         },
+         error: function(){
+           console.log('GET Error');
+         }
+       });
+     }
+    }
+
+    function getMap(guid) {
+     console.log('gone');
+     // var guid = guid;
+     $.ajax({
+       type: 'GET',
+       url: '/maps/' + guid,
+       // dataType: 'application/json',
+       success: function(data){
+         console.log(data);
+         console.log('Successful GET!');
+       },
+       error: function(){
+         console.log('GET Error');
+       }
+     });
+    }
+    </script>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
+    <link href='./css/styles.css' rel='stylesheet' />
+    <link href='./css/cover.css' rel='stylesheet' />
 		<title>myMap</title>
 	</head>
-	<body>
-   <form>
-     <button type="button" onclick="getUserMaps()">
-       Retrieve my maps!
-     </button>
-   </form> 
-   <script>
-   function getUserMaps() {
-    var userId = parseInt(document.cookie.split('=')[1]);
-    if (typeof userId !== 'number') {
-      console.log('user id is not a number');
-      return;
-    } else {
-      console.log('making ajax request from client')
-      $.ajax({
-        type: 'GET',
-        url: '/myMap/user',
-        data: userId,
-        success: function(userMaps){
-          console.log(userMaps);
-          console.log('Successful GET!');
-          for (var i = 0; i < userMaps.length; i++) {
-            var link = document.createElement('a');
-            $(link).attr('href', '/maps/' + userMaps[i].map.guid).css('display', 'block');
-            link.innerText = 'Click here to see the map:  ' + userMaps[i].map.name;
-            $('body').append(link);
-          }
-        },
-        error: function(){
-          console.log('GET Error');
-        }
-      });
-    }
-   }
-
-   function getMap(guid) {
-    console.log('gone');
-    // var guid = guid;
-    $.ajax({
-      type: 'GET',
-      url: '/maps/' + guid,
-      // dataType: 'application/json',
-      success: function(data){
-        console.log(data);
-        console.log('Successful GET!');
-      },
-      error: function(){
-        console.log('GET Error');
-      }
-    });
-   }
-   </script>
+	<body class='site-wrapper'>
+   <div class='containerMap'>
+         <div id="map-canvas"></div> 
+       <div class="col-md-4 sidebar">
+         <form>
+         <h3 style="color:white"><center>Dashboard</center></h3>
+         <hr>
+            <div>
+              <button type="button" class='inputSize btn btn-default' onclick="getUserMaps()">
+                Retrieve my maps!
+              </button>
+            </div>
+            <br />
+            <div>
+              <a class='inputSize btn btn-default' href='/createMaps'>
+                Create a map!
+              </a>
+            </div>
+         </form> 
+       </div>
+   </div>
   </body>
 </html>
