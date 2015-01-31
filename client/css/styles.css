@@ -139,7 +139,7 @@ p {
     background-color: #fff;
     border-color: #ff0000;
     padding: 0 11px 0 13px;
-    width: 177px;
+    width: 100%;
     font-family: Roboto;
     font-size: 15px;
     font-weight: 300;
@@ -150,11 +150,11 @@ p {
     border-color: #ff0000;
     margin-left: -1px;
     padding-left: 14px;  /* Regular padding-left + 1. */
-    width: 177px;
+    width: 100%;
   }
 
-  #macTit {
-    width:177px;
+  #mapTit {
+    width: 100%;
   }
 
   .pac-container {
@@ -173,6 +173,13 @@ p {
     font-weight: 300;
   }
 
+  .btnSize {
+    width: 48%;
+  }
+
+  .inputSize {
+    width: 100%;
+  }
 
   /*Henry's createMap testing*/
   .sidebar {
@@ -181,13 +188,12 @@ p {
     left:0;
     top:0;
     bottom:0;
-    width: 200px;
+    width: 250px;
     overflow-y:auto;
     overflow-x:hidden;
-
     background-color: rgb(0, 0, 0);
     /* RGBa with 0.6 opacity */
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
     /* For IE 5.5 - 7*/
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
     /* For IE 8*/

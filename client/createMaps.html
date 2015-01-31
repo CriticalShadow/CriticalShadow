@@ -6,7 +6,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   
   <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
-  <link href='/css/styles.css' rel='stylesheet' />
+  <link href='css/styles.css' rel='stylesheet' />
   <script>
     $(document).ready(function(){
 
@@ -82,8 +82,8 @@
 
             // TODO: POINT & CLICK
             $('.div_container').append(
-            '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input>'+
-            '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
+            '<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input>'+
+            '<textarea placeholder="Enter location description here" class="form-control inputSize in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
             );//note: pointCounter++ is so the next one with have +1 index.
           });
       });
@@ -119,9 +119,12 @@
           }
 
         $('.div_container').append(
-          '<div class="onePoint"><input class="in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input>'+
-          '<textarea class="in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input.value+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+place.geometry.location.lat()+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+place.geometry.location.lng()+'></input></div>'
+          '<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input>'+
+          '<textarea placeholder="Enter location description here" class="inputSize form-control in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input.value+'\"+></input><input type=hidden class="pointLat' + pointCounter +'"value='+place.geometry.location.lat()+'></input><input type=hidden class="pointLng' + pointCounter++ +'"value='+place.geometry.location.lng()+'></input></div>'
           );//note: pointCounter++ is so the next one with have +1 index.
+
+          $('#pac-input').val(''); 
+          input.value = '';
         //bounds.extend(place.geometry.location);
         }// for
       });
@@ -209,17 +212,15 @@
   <body>
     <div class='containerMap'>
           <div id="map-canvas"></div> 
-        <div class="col-md-2 sidebar">
+        <div class="col-md-4 sidebar">
           <form>
-            <p><strong>Create Your Map!</strong></p>
-            <input id="mapTit" type='text' placeholder='Enter Map Title' required>
-            <br />
+            <h3 style="color:white"><center>Create Your Map!</center></h3>
+            <input id="mapTit" class='inputWidth form-control' type='text' placeholder='Enter Map Title' required>
             <input id="pac-input" class="controls" type="text" placeholder="Enter Location">
           <hr>
-          <br>
           <div class='div_container'></div>
-            <button type='button' class="pushToServer">Submit</button>
-            <button type='reset' value="Reset">Reset</button>
+            <button type='button' class="btnSize btn btn-success pushToServer">Submit</button>
+            <button type='reset' class="btnSize btn btn-danger" value="Reset">Reset</button>
           </form>
         </div>
     </div>
