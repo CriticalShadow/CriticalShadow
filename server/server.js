@@ -2,8 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var app = express();
-var port = process.env.PORT || 3000;
-var host = process.env.HOST;
 var path = require('path');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -17,6 +15,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 app.use(express.static(__dirname + '/../client'));
+
+app.set('port', process.env.PORT || 3000);
+app.set('host', process.env.HOST);
 app.set('views', '../views');
 app.set('view engine', 'jade'); //templating engine for dashboard and active map view
 
