@@ -109,7 +109,8 @@ p {
 }
 
 #dummy {
-  height: 450px;
+  height: 680px;
+  background-color: transparent;
 }
 
 
