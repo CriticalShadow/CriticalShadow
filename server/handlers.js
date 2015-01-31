@@ -220,15 +220,11 @@ handlers.getMap = function (guid) {
                   .complete(function (err, locationcontent) {
                     wholeMap.locations[index].title = locationcontent.dataValues.title;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
-                    wholeMap.locations[index].desc = locationcontent.dataValues.description;
+                    wholeMap.locations[index].desc = locationcontent.dataValues.description.toString();
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
                     wholeMap.locations[index].mapOrder = locationcontent.dataValues.mapOrder;
                     if (index === maplocations.length - 1) {
-                      // need to change this implementaion!  Returning the correct data, but need a better
-                      // than setTimeout
-                      // setTimeout(function () {
                         resolve(wholeMap);
-                      // }, 100);
                     }
                   })
                 } else {
@@ -260,9 +256,9 @@ handlers.getUserMaps = function(userId) {
       var count = 0;
       maps.forEach(function(map) {
         handlers.getMap(map.dataValues.guid)
-        .then(function(map) {
-          // console.log('results', results);
-          allUserMaps.push(map);
+        .then(function(results) {
+          console.log('results', results);
+          allUserMaps.push(results);
           count++;
           if (count === maps.length) {
             console.log('allUserMaps', allUserMaps);
@@ -276,7 +272,7 @@ handlers.getUserMaps = function(userId) {
 
 module.exports = handlers;
 
-//setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
+// setUser({name: 'neil', password: 'neilspass', email: 'neil@gmail.com'});
 
 //getUser({name: 'neil', password: 'neilspass'});
 
@@ -306,19 +302,6 @@ module.exports = handlers;
 //     title: 'Number three user input title'
 //   }
 // ]});
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

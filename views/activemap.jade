@@ -14,12 +14,12 @@ html
     article#narrative
       div(class='sections prose')
         section#cover(class='cover active')
-          h1!= name
+          h1!= map.name
           small(class='scroll quiet') Scroll 
         each location in locations
-          section&attributes({'id': location.name})
-            h3!= location.name
-            p!= location.description
+          section&attributes({'id': location.title})
+            h3!= location.title
+            p!= location.desc
         section#dummy
     script.
       var locations = !{JSON.stringify(locations)};
@@ -27,12 +27,12 @@ html
       var places = { type: 'FeatureCollection', features: []};
 
       for (var i = 0; i < locations.length; i++) {
-        places.features.push({ geometry: { type: "Point", coordinates: [-locations[i].longitude, locations[i].latitude]},
-          properties: { id: locations[i].name, zoom: 16 }, type: 'Feature'
+        places.features.push({ geometry: { type: "Point", coordinates: [locations[i].lng, locations[i].lat]},
+          properties: { id: locations[i].title, zoom: 16 }, type: 'Feature'
         });
       }
 
-      places.features.push({ geometry: { type: "Point", coordinates: [-locations[0].longitude, locations[0].latitude]},
+      places.features.push({ geometry: { type: "Point", coordinates: [locations[0].lng, locations[0].lat]},
         properties: { id: "cover", zoom: 14 }, type: 'Feature' });      
         
       var map = L.mapbox.map('map', 'nlokare.l114oiif', { zoomControl: false });
