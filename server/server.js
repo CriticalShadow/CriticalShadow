@@ -134,7 +134,7 @@ app.route('/createMaps')
     res.sendFile(path.join(__dirname, '/../client/createMaps.html'));
   })
   .post(function (req, res) {
-    var guid = Guid.v4().slice(0, 5);
+    var guid = Guid.v4().slice(0, 8);
     var map = req.body; //map data from client
     map.UserId = req.cookies.u_id; //adds UserId property
     map.Guid = guid;
