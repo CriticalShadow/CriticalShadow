@@ -34,7 +34,7 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new FacebookStrategy({
   clientID: app.get('FB_APPID'),
   clientSecret: app.get('FB_SECRET'),
-  callbackURL: "/auth/facebook/callback"
+  callbackURL: "https://vagabondwithme.herokuapp.com/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
@@ -55,6 +55,9 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
     })
     .then(function () {
       res.redirect('/myMaps'); //redirect them to their dashboard
+    })
+    .catch(function() {
+      res.redirect('/createMaps');
     });
 });
 
