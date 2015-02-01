@@ -1,8 +1,27 @@
 var Sequelize = require('sequelize');
 var db = {};
-db.sequelize = new Sequelize('shadowdb', 'W', '', {
-  dialect: "postgres"
-});
+
+  if (process.env.HEROKU_POSTGRESQL_PINK_URL) {
+    // the application is executed on Heroku ... use the postgres database
+    var match = process.env.HEROKU_POSTGRESQL_PINK_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
+ 
+    db.sequelize = new Sequelize(match[5], match[1], match[2], {
+      dialect:  'postgres',
+      protocol: 'postgres',
+      port:     match[4],
+      host:     match[3],
+      logging:  true //false
+    })
+  } else {
+    // the application is executed on the local machine ...
+    db.sequelize = new Sequelize('shadowdb', 'W', '', {
+      dialect: "postgres"
+    });
+  }
+
+// db.sequelize = new Sequelize('shadowdb', 'W', '', {
+//   dialect: "postgres"
+// });
 
 // User ID primary key is automatically created by Sequelize, no need to define this in the model
 db.User = db.sequelize.define('User', {
