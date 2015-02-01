@@ -18,7 +18,7 @@ app.use(express.static(__dirname + '/../client'));
 
 app.set('port', process.env.PORT || 3000); //sets the port
 app.set('host', process.env.HOST); //sets the host
-app.set('views', '../views'); //where views live
+app.set('views', './views'); //where views live
 app.set('view engine', 'jade'); //templating engine for dashboard and active map view
 app.set('FB_APPID', process.env.FACEBOOK_APP_ID);
 app.set('FB_SECRET', process.env.FACEBOOK_APP_SECRET);
