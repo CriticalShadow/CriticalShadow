@@ -34,7 +34,7 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new FacebookStrategy({
   clientID: app.get('FB_APPID'),
   clientSecret: app.get('FB_SECRET'),
-  callbackURL: "https://vagabondwithme.herokuapp.com/auth/facebook/callback"
+  callbackURL: "/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
