@@ -163,12 +163,19 @@ handlers.setMap = function (map) {
           }
         }
       })
-    } else { // update the locations associated with the map guid
-    }
+    } 
   })
 };
 
 handlers.getMap = function (guid) {
+
+  var compare = function (a,b) {
+    if (a.last_nom < b.last_nom)
+       return -1;
+    if (a.last_nom > b.last_nom)
+      return 1;
+    return 0;
+  };
 
   return new Promise(function (resolve, reject) {
   var wholeMap = {};
@@ -226,8 +233,9 @@ handlers.getMap = function (guid) {
                     wholeMap.locations[index].desc = locationcontent.dataValues.description.toString();
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
                     wholeMap.locations[index].mapOrder = locationcontent.dataValues.mapOrder;
-                    if (index === maplocations.length - 1) {
-                        resolve(wholeMap);
+                    if (index === maplocations.length - 1) { 
+                      wholeMap.sort(compare);
+                      resolve(wholeMap);
                     }
                   })
                 } else {
