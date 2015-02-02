@@ -254,6 +254,7 @@ handlers.getUserMaps = function(userId) {
       console.log('got all the maps for the user with the user id ' + userId);
       // console.log('maps', maps);
       var count = 0;
+      console.log('maps', maps);
       maps.forEach(function(map) {
         handlers.getMap(map.dataValues.guid)
         .then(function(results) {
