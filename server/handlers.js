@@ -198,9 +198,9 @@ handlers.getMap = function (guid) {
         } else if (maplocations.length === 0) {
           console.log('No map locations exist for that map id', maplocations);
         } else {
-          console.log('maplocations', maplocations);
           for (var i = 0; i < maplocations.length; i++) {
             (function (index) {
+              console.log('maplocations dataValues', maplocations[index].dataValues);
               wholeMap.locations.push(maplocations[index].dataValues);
               db.Location.find({
                 where: {
@@ -220,7 +220,7 @@ handlers.getMap = function (guid) {
                     }
                   })
                   .complete(function (err, locationcontent) {
-                    console.log('dataValues', locationcontent.dataValues);
+                    // console.log('dataValues', locationcontent.dataValues);
                     wholeMap.locations[index].title = locationcontent.dataValues.title;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
                     wholeMap.locations[index].desc = locationcontent.dataValues.description.toString();
