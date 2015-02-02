@@ -253,20 +253,24 @@ handlers.getUserMaps = function(userId) {
     .complete(function(err, maps) {
       console.log('got all the maps for the user with the user id ' + userId);
       var count = 0;
-      console.log('maps', maps);
-      maps.forEach(function(map) {
-        handlers.getMap(map.dataValues.guid)
-        .then(function(results) {
-          console.log('results', results);
-          allUserMaps.push(results);
-          count++;
-          if (count === maps.length) {
-            console.log('allUserMaps', allUserMaps);
-            var data = {data: allUserMaps};
-            resolve(data);
-          }
+      console.log('maps', maps)
+      if (maps === []) { // if the user has not created any maps yet
+        resolve([]);
+      } else {
+        maps.forEach(function(map) {
+          handlers.getMap(map.dataValues.guid)
+          .then(function(results) {
+            console.log('results', results);
+            allUserMaps.push(results);
+            count++;
+            if (count === maps.length) {
+              console.log('allUserMaps', allUserMaps);
+              var data = {data: allUserMaps};
+              resolve(data);
+            }
+          });
         });
-      });
+      }
     });
   });
 };
