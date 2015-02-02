@@ -66,6 +66,8 @@ db.Location.belongsToMany(db.Map, { through: 'MapLocation' });
 db.MapLocation.hasOne(db.MapLocationContent);
 db.MapLocationContent.belongsTo(db.MapLocation);
 
+db.MapLocationContent.hasOne(db.Map);
+
 
 db.sequelize
 .sync()
