@@ -218,7 +218,8 @@ handlers.getMap = function (guid) {
                     }
                   })
                   .complete(function (err, locationcontent) {
-                    wholeMap.locations[index].title = locationcontent.dataValues.title;
+                    console.log('dataValues', dataValues);
+                    wholeMap.locations[index].title = locationcontent.dataValues.name;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
                     wholeMap.locations[index].desc = locationcontent.dataValues.description.toString();
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
