@@ -272,3 +272,4 @@ button.createmaps{margin-top:25px}
 100%{background-color:#F8BB86}}
 .pulseWarningIns{-webkit-animation:pulseWarningIns .75s infinite alternate;animation:pulseWarningIns .75s infinite alternate}
 .sweet-alert p{font-size:22px}
+.leaflet-left{left:auto;right:0;margin-right:20px;}
