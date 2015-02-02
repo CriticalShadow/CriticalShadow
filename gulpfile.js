@@ -13,4 +13,4 @@ gulp.task('minify', function () {
     .pipe(gulp.dest('client/js'));
 });
 
-gulp.task('default', 'minify');
+gulp.task('default', ['minify']);

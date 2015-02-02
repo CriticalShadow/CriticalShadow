@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="utf-8">  
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
-    <link href='css/styles.css' rel='stylesheet' />
-    <script src="/js/lib/sweet-alert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/sweet-alert.css">
-  </head>
-  <body>
-    <div class='containerMap'>
-        <div id="map-canvas"></div> 
-        <div class="col-md-4 sidebar">
-          <form>
-            <h3 style="color:white"><center>Create Your Map!</center></h3>
-            <input id="mapTit" class='inputWidth form-control' type='text' placeholder='Enter Map Title' required>
-            <input id="pac-input" class="controls" type="text" placeholder="Enter Location">
-            <button type='button' class="btnSize btn btn-success pushToServer">Submit</button>
-            <button type='reset' class="btnSize btn btn-danger resetMap" value="Reset">Reset</button>
-            <hr>
-            <div class='div_container'></div>
-          </form>
-        </div>
-    </div>
-  </body>
-  <script src="/js/createMap.js" async></script>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="utf-8">  
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.2-dist/css/bootstrap.css">
+<link href='css/styles.css' rel='stylesheet' />
+<script src="/js/lib/sweet-alert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/sweet-alert.css">
+</head>
+<body>
+<div class='containerMap'>
+<div id="map-canvas"></div> 
+<div class="col-md-4 sidebar">
+<form>
+<h3 style="color:white"><center>Create Your Map!</center></h3>
+<input id="mapTit" class='inputWidth form-control' type='text' placeholder='Enter Map Title' required>
+<input id="pac-input" class="controls" type="text" placeholder="Enter Location">
+<button type='button' class="btnSize btn btn-success pushToServer">Submit</button>
+<button type='reset' class="btnSize btn btn-danger resetMap" value="Reset">Reset</button>
+<hr>
+<div class='div_container'></div>
+</form>
+</div>
+</div>
+</body>
+<script src="/js/vagabond.min.js" async></script>
 </html>
