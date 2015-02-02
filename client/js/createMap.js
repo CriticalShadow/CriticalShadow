@@ -243,11 +243,7 @@ $(document).ready(function () {
   //*****************X BUTTON*********************//
 
     $(document).on('click', 'img.xButton', function () {
-<<<<<<< HEAD
       $(this).closest('.onePoint').fadeOut(500, function() { $(this).closest('.onePoint').remove(); });
-=======
-      $(this).closest('.onePoint').remove();
->>>>>>> 8cc60a6633a3ee16c3b8c838f06a4ba67ca56405
       var lattLng = $(this).closest('.onePoint').find('input.hiddenLat').val() + ', '+ $(this).closest('.onePoint').find('input.hiddenLng').val();
       markersObj[lattLng].setMap(null);
     });
