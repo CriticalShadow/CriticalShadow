@@ -44,7 +44,7 @@ html
         properties: { id: "appacademy", zoom: 16 }, type: 'Feature' }
       ]};
 
-      var map = L.mapbox.map('map', 'nlokare.l114oiif', { zoomControl: false });
+      var map = L.mapbox.map('map', 'nlokare.l114oiif', { zoomControl: true });
 
       var placesLayer = L.mapbox.featureLayer(places).addTo(map);
     script(src='/js/mymap.js')

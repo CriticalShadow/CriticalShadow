@@ -56,7 +56,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
     .then(function () {
       res.redirect('/myMaps'); //redirect them to their dashboard
     })
-    .catch(function() {
+    .catch(function () {
       res.redirect('/createMaps');
     });
 });
@@ -75,7 +75,7 @@ app.get('/example', function (req, res) {
 app.get('/myMaps', function (req, res) {
   handlers.getUserMaps(req.cookies.u_id) //use the browser cookie to fetch the appropriate users data
     .then(function (maps) {
-      console.log('maps', maps)
+      console.log('maps', maps);
       res.render('mymaps', maps); //render the jade template and send along the appropriate data to the client
     });
 });
