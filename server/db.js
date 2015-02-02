@@ -61,14 +61,12 @@ db.Map.belongsTo(db.User);
 // Many to many relationship between maps and locations, through the MapLocation table
 db.Map.belongsToMany(db.Location, { through: 'MapLocation' });
 db.Location.belongsToMany(db.Map, { through: 'MapLocation' });
-db.MapLocationContent.belongsToMany(db.Map, { through: 'MapLocation' });
 
 // A map location has one content record associated with it. 1 to 1 relationship
 db.MapLocation.hasOne(db.MapLocationContent);
 db.MapLocationContent.belongsTo(db.MapLocation);
 
-// The content associated with a map location has one map
-// db.MapLocationContent.hasOne(db.MapLocation, {foreignKey: 'MapId'});
+
 
 
 db.sequelize
