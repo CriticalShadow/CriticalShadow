@@ -13,7 +13,8 @@ $(document).ready(function () {
     mapName: null,
     locations: [] // array of objects contains points. 
   };
-  var markersArray = [];
+  //var markersArray = [];
+  var markersObj = {};
   
   function geoFindMe () {
     if (!navigator.geolocation){
@@ -38,8 +39,11 @@ $(document).ready(function () {
 
   function setBounds() {
     var bounds = new google.maps.LatLngBounds();
-    for (var i=0; i < markersArray.length; i++) {
-      bounds.extend(markersArray[i].getPosition());
+    // for (var i=0; i < markersArray.length; i++) {
+    //   bounds.extend(markersArray[i].getPosition());
+    // }
+    for( var key in markersObj ){
+      bounds.extend(markersObj[key].getPosition());
     }
     map.fitBounds(bounds);
   }
@@ -74,7 +78,7 @@ $(document).ready(function () {
         var latitude = event.latLng.lat();
         var longitude = event.latLng.lng();
         codeLatLng(latitude, longitude, function (address_data) {
-
+        // note: marker is added in codeLatLng()
           $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
             '<textarea placeholder="Enter location description here" class="form-control inputSize2 in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="hiddenLat pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="hiddenLng pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
           ).hide().appendTo('.div_container').fadeIn();
@@ -105,7 +109,10 @@ $(document).ready(function () {
         });
         infowindow.setContent(input.value);
         infowindow.open(map, marker);
-        markersArray.push(marker);
+        var lattLng = place.geometry.location.lat()+', '+place.geometry.location.lng();// d & k 
+        //markersArray.push(marker);
+        markersObj[lattLng] = marker;
+        console.log(lattLng);
         setBounds();
 
       $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
@@ -140,10 +147,9 @@ $(document).ready(function () {
             position: latlng,
             map: map
           });
-
+          markersObj[lat+', '+lng] = marker;
           infowindow.setContent(results[1].formatted_address);
           infowindow.open(map, marker);
-          markersArray.push(marker);
           setBounds();  
 
           cb(results[1].formatted_address);
@@ -227,12 +233,19 @@ $(document).ready(function () {
         locations: []
       };
       $('.onePoint').fadeOut();
+      for( var key in markersObj ){
+        markersObj[key].setMap(null);
+      }
+      markersObj = {};
+      initialize();
     });
 
   //*****************X BUTTON*********************//
 
     $(document).on('click', 'img.xButton', function () {
-      $(this).closest('.onePoint').fadeOut();
+      $(this).closest('.onePoint').remove();
+      var lattLng = $(this).closest('.onePoint').find('input.hiddenLat').val() + ', '+ $(this).closest('.onePoint').find('input.hiddenLng').val();
+      markersObj[lattLng].setMap(null);
     });
   });
 
