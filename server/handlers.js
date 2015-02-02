@@ -254,8 +254,9 @@ handlers.getUserMaps = function(userId) {
       console.log('got all the maps for the user with the user id ' + userId);
       var count = 0;
       console.log('maps', maps)
-      if (maps === []) { // if the user has not created any maps yet
-        resolve([]);
+      if (maps.length === 0) { // if the user has not created any maps yet
+        var data = {data: maps};
+        resolve(data);
       } else {
         maps.forEach(function(map) {
           handlers.getMap(map.dataValues.guid)
