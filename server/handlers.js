@@ -219,7 +219,7 @@ handlers.getMap = function (guid) {
                   })
                   .complete(function (err, locationcontent) {
                     console.log('dataValues', locationcontent.dataValues);
-                    wholeMap.locations[index].title = locationcontent.dataValues.name;
+                    wholeMap.locations[index].title = locationcontent.dataValues.title;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
                     wholeMap.locations[index].desc = locationcontent.dataValues.description.toString();
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
