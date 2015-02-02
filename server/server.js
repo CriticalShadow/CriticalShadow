@@ -35,10 +35,6 @@ passport.use(new FacebookStrategy({
   clientID: 922911927720037,
   clientSecret: '513872ee43b515e579d4133a0d7e4086',
   callbackURL: "http://localhost:3000"
-<<<<<<< HEAD
-
-=======
->>>>>>> 8cc60a6633a3ee16c3b8c838f06a4ba67ca56405
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
