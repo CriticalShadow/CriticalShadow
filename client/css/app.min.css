@@ -157,7 +157,7 @@ section.active{background:#3D3E40;color:#fefefe}
 h3{font-family:Sigward;font-size:30px}
 h1{font-family:Sigward;font-size:40px}
 p{font-family:Eurofurence;font-size:18px}
-#dummy{height:680px;background-color:transparent}
+#dummy{height:800px;background-color:transparent}
 #map-canvas{position:absolute;height:100%;width:100%}
 .containerMap{width:100%;height:100%;color:black;}
 .controls{margin-top:16px;margin-bottom:16px;border:1px solid transparent;border-radius:2px 0 0 2px;box-sizing:border-box;-moz-box-sizing:border-box;height:32px;outline:0;box-shadow:0 2px 6px rgba(0,0,0,.3)}
