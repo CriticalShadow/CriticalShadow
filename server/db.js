@@ -66,6 +66,9 @@ db.Location.belongsToMany(db.Map, { through: 'MapLocation' });
 db.MapLocation.hasOne(db.MapLocationContent);
 db.MapLocationContent.belongsTo(db.MapLocation);
 
+// The content associated with a map location has one map
+db.MapLocationContent.hasOne(db.MapLocation, {foreignKey: 'MapId'});
+
 
 db.sequelize
 .sync()
