@@ -18,7 +18,7 @@ app.use(express.static(__dirname + '/../client'));
 
 app.set('port', process.env.PORT || 3000); //sets the port
 app.set('host', process.env.HOST); //sets the host
-app.set('views', '../views'); //where views live
+app.set('views', './views'); //where views live
 app.set('view engine', 'jade'); //templating engine for dashboard and active map view
 app.set('FB_APPID', process.env.FACEBOOK_APP_ID);
 app.set('FB_SECRET', process.env.FACEBOOK_APP_SECRET);
@@ -32,9 +32,9 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new FacebookStrategy({
-  clientID: app.get('FB_APPID'),
-  clientSecret: app.get('FB_SECRET'),
-  callbackURL: "http://www.vagabondwith.me/auth/facebook/callback"
+  clientID: 922911927720037,
+  clientSecret: '513872ee43b515e579d4133a0d7e4086',
+  callbackURL: "https://vagabondwithme.herokuapp.com/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
@@ -55,6 +55,9 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
     })
     .then(function () {
       res.redirect('/myMaps'); //redirect them to their dashboard
+    })
+    .catch(function() {
+      res.redirect('/createMaps');
     });
 });
 
