@@ -1,11 +1,7 @@
 var Sequelize = require('sequelize');
 var db = {};
 db.sequelize = new Sequelize('shadowdb', 'root', '', {
-<<<<<<< HEAD
   dialect: "mySql"
-=======
-  dialect: "mysql"
->>>>>>> 8cc60a6633a3ee16c3b8c838f06a4ba67ca56405
 });
 
 // User ID primary key is automatically created by Sequelize, no need to define this in the model
