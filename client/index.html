@@ -13,6 +13,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/cover.css">
     <title>Vagabond</title>
+    <script>
+      function geoFindMe () {
+        if (!navigator.geolocation) {
+          alert("Geolocation is not supported by your browser");
+          return;
+        }
+        function success (position) {
+          var latitude  = position.coords.latitude;
+          var longitude = position.coords.longitude;
+          document.cookie="latitude="+latitude;
+          document.cookie="longitude="+longitude;
+        };
+        function error () {
+          alert("Can't find your location. Please adjust settings");
+        };
+        navigator.geolocation.getCurrentPosition(success, error);
+      }
+
+      geoFindMe(); //get location at this page
+    </script>
   </head>
   <body ng-app='app'>
   <div ng-controller='mainCtrl' class="site-wrapper">
