@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Vagabond">
-    <meta name="author" content="Critical Shadow">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js'></script>
-    <script type="text/javascript" src='../app/ngFx/dist/ngFx.js'></script>
-    <script type="text/javascript" src='../app/app.js'></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/cover.css">
-    <title>Vagabond</title>
-  </head>
-  <body ng-app='app'>
-  <div ng-controller='mainCtrl' class="site-wrapper">
-    <div class="site-wrapper-inner">
-      <div class="cover-container">
-        <div class="masthead clearfix">
-          <div class="inner">
-            <h3 class="masthead-brand branding">Vagabond</h3>
-            <nav>
-              <ul class="nav masthead-nav">
-                <li><a ng-click='templateHide()' ui-sref="home">Home</a></li>
-                <li><a ng-click='templateHide()' href="/example">View Example</a></li>
-                <li><a ng-click='templateHide()' ui-sref="login">Login</a><li>
-                <li><a ng-click='templateHide()' ui-sref="signup">Sign Up</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <div class='fx-fade-up fx-easing-cubic fx-speed-500' ui-view>
-        </div>
-    </div>
-  </div>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vagabond">
+<meta name="author" content="Critical Shadow">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js'></script>
+<script type="text/javascript" src='../app/ngFx/dist/ngFx.js'></script>
+<script type="text/javascript" src='../app/app.js'></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/cover.css">
+<title>Vagabond</title>
+</head>
+<body ng-app='app'>
+<div ng-controller='mainCtrl' class="site-wrapper">
+<div class="site-wrapper-inner">
+<div class="cover-container">
+<div class="masthead clearfix">
+<div class="inner">
+<h3 class="masthead-brand branding">Vagabond</h3>
+<nav>
+<ul class="nav masthead-nav">
+<li><a ng-click='templateHide()' ui-sref="home">Home</a></li>
+<li><a ng-click='templateHide()' href="/example">View Example</a></li>
+<li><a ng-click='templateHide()' ui-sref="login">Login</a><li>
+<li><a ng-click='templateHide()' ui-sref="signup">Sign Up</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class='fx-fade-up fx-easing-cubic fx-speed-500' ui-view>
+</div>
+</div>
+</div>
+</body>
 </html>
