@@ -15,14 +15,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser()); //use the cookieParser in routes with req/res.cookies
-app.use(gzippo.staticGzip(__dirname + '/../client'));
+app.use(gzippo.staticGzip(__dirname + '/../client')); //compression for serving static files (CSS & JS)
 
 app.set('port', process.env.PORT || 3000); //sets the port
 app.set('host', process.env.HOST); //sets the host
 app.set('views', './views'); //where views live
 app.set('view engine', 'jade'); //templating engine for dashboard and active map view
-app.set('FB_APPID', process.env.FACEBOOK_APP_ID);
-app.set('FB_SECRET', process.env.FACEBOOK_APP_SECRET);
+app.set('FB_APPID', process.env.FACEBOOK_APP_ID); //Passport needs this for FB auth
+app.set('FB_SECRET', process.env.FACEBOOK_APP_SECRET); //Passport needs this for FB auth
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -33,8 +33,8 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new FacebookStrategy({
-  clientID: app.get('FB_APPID'), //922911927720037,
-  clientSecret: app.get('FB_SECRET'), //513872ee43b515e579d4133a0d7e4086',
+  clientID: app.get('FB_APPID'),
+  clientSecret: app.get('FB_SECRET'),
   callbackURL: "http://www.vagabondwith.me/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
