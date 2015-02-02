@@ -8,13 +8,14 @@ var FacebookStrategy = require('passport-facebook').Strategy; //for Facebook log
 var db = require('./db'); //database
 var handlers = require('./handlers'); //database methods
 var Guid = require('node-uuid'); //for generating GUIDs
+var gzippo = require('gzippo'); //compression module
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser()); //use the cookieParser in routes with req/res.cookies
-app.use(express.static(__dirname + '/../client'));
+app.use(gzippo.staticGzip(__dirname + '/../client'));
 
 app.set('port', process.env.PORT || 3000); //sets the port
 app.set('host', process.env.HOST); //sets the host
@@ -63,7 +64,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
 
 //Home page
 app.get('/', function (req, res) {
-  res.sendFile(__dirname, 'index.html'); //home page
+  res.sendFile(path.join(__dirname, '/../client/index.html')); //home page
 });
 
 //View Example page now using Jade templates
