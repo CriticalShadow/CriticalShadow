@@ -232,7 +232,16 @@ $(document).ready(function () {
   //*****************X BUTTON*********************//
 
     $(document).on('click', 'img.xButton', function () {
-      $(this).closest('.onePoint').fadeOut();
+      // console.log(data);
+      // var currentLat = $(this).closest('.onePoint').find('input.hiddenLat').val();
+      // var currentLng = $(this).closest('.onePoint').find('input.hiddenLng').val();
+      // for (var i = 0; i < data.locations.length; i++) {
+      //   if(data.locations[i]['lat'] === currentLat && data.locations[i]['lng'] === currentLng){
+      //     data.locations.splice(i, 1);
+      //   }
+      // };
+      
+      $(this).closest('.onePoint').fadeOut(500, function() { $(this).closest('.onePoint').remove(); });
     });
   });
 
