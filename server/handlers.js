@@ -4,9 +4,11 @@ var Promise = require('bluebird');
 
 var handlers = {};
 
+// set the user in the db
 handlers.setUser = function (username) {
   return new Promise(function (resolve, reject) {
     var name = username;
+    // check to see whether or not the user exists already
     db.User
     .find({ where: {
       name: name}
@@ -15,7 +17,8 @@ handlers.setUser = function (username) {
       if (err) {
         console.log(err);
         return err;
-      } else if (user === null) { // if not found, then we create the user
+      } else if (user === null) { 
+        // if the user is not found in the db, then we create the user
         db.User.create({
           name: username
         })
@@ -23,30 +26,12 @@ handlers.setUser = function (username) {
           if (err) { 
             console.log(err)
           } else {
+            // send the user info back to the server
             resolve(user);
           }
         });  
       } else { 
-        resolve(user);
-      }
-    });
-  });
-};
-
-handlers.getUser = function (user) {
-  return new Promise(function (resolve, reject) {
-    var name = user.name;
-    db.User
-    .find({ where: {
-      name: name
-    }})
-    .complete(function (err, user) {
-      if (!!err) {
-        console.log('An error occurred while searching for John:', err)
-      } else if (!user) {
-        console.log('No user with the username ' + name + ' has been found.')
-      } else {
-        console.log(user);
+        // send the user info back to the server
         resolve(user);
       }
     });
@@ -234,7 +219,8 @@ handlers.getMap = function (guid) {
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
                     wholeMap.locations[index].mapOrder = locationcontent.dataValues.mapOrder;
                     if (index === maplocations.length - 1) { 
-                      wholeMap.locations.sort(compare);
+                      // sort the locations by mapOrder
+                      wholeMap.locations.sort(compare); 
                       resolve(wholeMap);
                     }
                   })
@@ -251,7 +237,7 @@ handlers.getMap = function (guid) {
   });
 };
 
-handlers.getUserMaps = function(userId) {
+handlers.getUserMaps = function (userId) {
 
   return new Promise(function (resolve, reject) {
     var allUserMaps = [];
