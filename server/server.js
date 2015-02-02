@@ -35,7 +35,7 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new FacebookStrategy({
   clientID: 922911927720037,
   clientSecret: '513872ee43b515e579d4133a0d7e4086',
-  callbackURL: "https://vagabondwithme.herokuapp.com/auth/facebook/callback"
+  callbackURL: "https://vagabondwith.me/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {

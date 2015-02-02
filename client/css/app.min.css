@@ -110,7 +110,7 @@
 a,a:focus,a:hover{color:#fff}
 .btn-default,.btn-default:focus,.btn-default:hover{color:#333;text-shadow:none;background-color:#fff;border:1px solid #fff}
 body,html{height:100%}
-body{color:#fff;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+body{color:black;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .site-wrapper{background:url(background.jpg) no-repeat;background-size:cover;display:table;width:100%;height:100%;min-height:100%;-webkit-box-shadow:inset 0 0 100px rgba(0,0,0,.5);box-shadow:inset 0 0 100px rgba(0,0,0,.5)}
 .site-wrapper:after{opacity:.2}
 .site-wrapper-inner{display:table-cell;vertical-align:top}
@@ -159,9 +159,9 @@ h1{font-family:Sigward;font-size:40px}
 p{font-family:Eurofurence;font-size:18px}
 #dummy{height:680px;background-color:transparent}
 #map-canvas{position:absolute;height:100%;width:100%}
-.containerMap{width:100%;height:100%}
+.containerMap{width:100%;height:100%;color:black;}
 .controls{margin-top:16px;margin-bottom:16px;border:1px solid transparent;border-radius:2px 0 0 2px;box-sizing:border-box;-moz-box-sizing:border-box;height:32px;outline:0;box-shadow:0 2px 6px rgba(0,0,0,.3)}
-#pac-input{background-color:#fff;border-color:red;padding:0 11px 0 13px;width:100%;font-family:Roboto;font-size:15px;font-weight:300;text-overflow:ellipsis}
+#pac-input{background-color:#fff;border-color:red;padding:0 11px 0 13px;width:100%;font-family:Roboto;font-size:15px;font-weight:300;text-overflow:ellipsis; color: black;}
 #pac-input:focus{border-color:red;margin-left:-1px;padding-left:14px;width:100%}
 #mapTit{width:100%}
 .pac-container{font-family:Roboto}
