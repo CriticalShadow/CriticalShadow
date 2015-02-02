@@ -198,6 +198,7 @@ handlers.getMap = function (guid) {
         } else if (maplocations.length === 0) {
           console.log('No map locations exist for that map id', maplocations);
         } else {
+          console.log('maplocations', maplocations);
           for (var i = 0; i < maplocations.length; i++) {
             (function (index) {
               wholeMap.locations.push(maplocations[index].dataValues);
@@ -207,6 +208,7 @@ handlers.getMap = function (guid) {
                 }
               })
               .complete(function (err, location) {
+                console.log('location', location);
                 if (err) {
                   console.log('Error returning the location from the locations table', err); 
                 } else if (typeof location === 'object') {
