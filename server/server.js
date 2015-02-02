@@ -32,9 +32,9 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new FacebookStrategy({
-  clientID: app.get('FB_APPID'),
-  clientSecret: app.get('FB_SECRET'),
-  callbackURL: "http://www.vagabondwith.me/auth/facebook/callback"
+  clientID: 922911927720037,
+  clientSecret: '513872ee43b515e579d4133a0d7e4086',
+  callbackURL: "http://localhost:3000/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
