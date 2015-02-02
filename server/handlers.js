@@ -234,7 +234,7 @@ handlers.getMap = function (guid) {
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
                     wholeMap.locations[index].mapOrder = locationcontent.dataValues.mapOrder;
                     if (index === maplocations.length - 1) { 
-                      wholeMap.sort(compare);
+                      wholeMap.locations.sort(compare);
                       resolve(wholeMap);
                     }
                   })
