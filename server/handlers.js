@@ -182,6 +182,7 @@ handlers.getMap = function (guid) {
       console.log('No map with the guid ' + guid + ' has been found.')
     } else {
       wholeMap.map = map.dataValues;
+      // find all the locations for the map
       db.MapLocation.findAll({ 
         where: {
           MapId: map.id
@@ -208,13 +209,14 @@ handlers.getMap = function (guid) {
                 } else if (typeof location === 'object') {
                   wholeMap.locations[index].lat = location.latitude;
                   wholeMap.locations[index].lng = location.longitude;
+                  // find each locations associated content from the MapLocationContents table
                   db.MapLocationContent.find({ 
                     where: {
                       MapLocationLocationId: location.dataValues.id
                     }
                   })
                   .complete(function (err, locationcontent) {
-                    // console.log('dataValues', locationcontent.dataValues);
+                    // set the properties on the wholeMap object
                     wholeMap.locations[index].title = locationcontent.dataValues.title;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
                     wholeMap.locations[index].desc = locationcontent.dataValues.description.toString();
@@ -239,6 +241,7 @@ handlers.getMap = function (guid) {
   });
 };
 
+// get all maps for a user, denoted by the userId passed into the function
 handlers.getUserMaps = function (userId) {
 
   return new Promise(function (resolve, reject) {
