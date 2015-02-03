@@ -13,8 +13,9 @@ $(document).ready(function () {
     mapName: null,
     locations: [] // array of objects contains points. 
   };
-  var markersArray = [];
+  var markersObj = {};
   
+  // function also in index.html. It exist here just incase we didn't grab latt&long there.
   function geoFindMe () {
     if (!navigator.geolocation){
       alert("Geolocation is not supported by your browser");
@@ -36,20 +37,35 @@ $(document).ready(function () {
     navigator.geolocation.getCurrentPosition(success, error);
   }
 
-  function setBounds() {
+  // grab cookie, latt and long, from index.html
+  function getCookie (cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+  }
+
+  // resizing the entire map to fit all data points
+  function setBounds () {
     var bounds = new google.maps.LatLngBounds();
-    for (var i=0; i < markersArray.length; i++) {
-      bounds.extend(markersArray[i].getPosition());
+    for( var key in markersObj ){
+      bounds.extend(markersObj[key].getPosition());
     }
     map.fitBounds(bounds);
   }
-   
+
+  // used for grabbing title of address
   var nameParse = function (address) {
     console.log(address);
     var temp = address.split(',');
     return temp[0];
   }
 
+  // renders google map
   function initialize () {
     var map_canvas = document.getElementById('map-canvas');
     var myLatlng = new google.maps.LatLng(global_lat, global_lon);
@@ -74,7 +90,7 @@ $(document).ready(function () {
         var latitude = event.latLng.lat();
         var longitude = event.latLng.lng();
         codeLatLng(latitude, longitude, function (address_data) {
-
+        // note: marker is added in codeLatLng()
           $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
             '<textarea placeholder="Enter location description here" class="form-control inputSize2 in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="hiddenLat pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="hiddenLng pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
           ).hide().appendTo('.div_container').fadeIn();
@@ -105,7 +121,10 @@ $(document).ready(function () {
         });
         infowindow.setContent(input.value);
         infowindow.open(map, marker);
-        markersArray.push(marker);
+        var lattLng = place.geometry.location.lat()+', '+place.geometry.location.lng();// d & k 
+        //markersArray.push(marker);
+        markersObj[lattLng] = marker;
+        console.log(lattLng);
         setBounds();
 
       $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
@@ -126,8 +145,8 @@ $(document).ready(function () {
 
   }
 
-  // google geoCoder. Returns a physical address from latt and lng. 
-  // Quotas: 5 per second and 2500 per day. 
+  // Google GeoCoder. Returns a physical address from latt and lng. 
+  // Quotas: 5 per second and 2500 per day 
   function codeLatLng (latt, Lon, cb) {
     var lat = latt;
     var lng = Lon;
@@ -140,10 +159,9 @@ $(document).ready(function () {
             position: latlng,
             map: map
           });
-
+          markersObj[lat+', '+lng] = marker;
           infowindow.setContent(results[1].formatted_address);
           infowindow.open(map, marker);
-          markersArray.push(marker);
           setBounds();  
 
           cb(results[1].formatted_address);
@@ -156,10 +174,16 @@ $(document).ready(function () {
     });
   }
 
-  google.maps.event.addDomListener(window, 'load', geoFindMe);
+    if(getCookie('latitude') && getCookie('longitude')){
+      global_lat = parseFloat(getCookie('latitude'));
+      global_lon = parseFloat(getCookie('longitude'));
+      google.maps.event.addDomListener(window, 'load', initialize);
+    } else{
+      google.maps.event.addDomListener(window, 'load', geoFindMe);
+    }
 
-  //map title validity checker. 
-  function submitform() {
+  // map title validity checker. 
+  function submitform () {
     var f = document.getElementsByTagName('form')[0];
     if(f.checkValidity()) {
       return true;
@@ -182,8 +206,6 @@ $(document).ready(function () {
       data.locations.push(pointObj);
     }
     data.mapName = $('#mapTit').val();
-    console.log(data);
-    console.log(markersArray);
 
     $.ajax({
         type: "POST",
@@ -217,7 +239,7 @@ $(document).ready(function () {
   }
   });
 
-  $(document).ready(function(){
+  $(document).ready(function () {
   
   //*****************RESET BUTTON*********************//
 
@@ -227,12 +249,19 @@ $(document).ready(function () {
         locations: []
       };
       $('.onePoint').fadeOut();
+      for( var key in markersObj ){
+        markersObj[key].setMap(null);
+      }
+      markersObj = {};
+      initialize();
     });
 
   //*****************X BUTTON*********************//
 
     $(document).on('click', 'img.xButton', function () {
-      $(this).closest('.onePoint').fadeOut();
+      $(this).closest('.onePoint').fadeOut(500, function() { $(this).closest('.onePoint').remove(); });
+      var lattLng = $(this).closest('.onePoint').find('input.hiddenLat').val() + ', '+ $(this).closest('.onePoint').find('input.hiddenLng').val();
+      markersObj[lattLng].setMap(null);
     });
   });
 
