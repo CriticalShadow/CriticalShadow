@@ -60,7 +60,6 @@ $(document).ready(function () {
 
   // used for grabbing title of address
   var nameParse = function (address) {
-    console.log(address);
     var temp = address.split(',');
     return temp[0];
   }
@@ -198,9 +197,6 @@ $(document).ready(function () {
 
     $('.onePoint').each(function (point) {
 
-      console.log('point', point);
-      console.log('this', this);
-
       var pointObj = {};
       pointObj['name'] = $(this).children().filter($('.in_name')).val();
       pointObj['lat'] = $(this).children().filter($('.pointLat')).val();
@@ -211,19 +207,7 @@ $(document).ready(function () {
       data.locations.push(pointObj);
     });
 
-    // for( var i = 0; i < points_length; i++ ){
-    //   var pointObj = {};
-    //   pointObj['name'] = $('.in_name'+i).val();
-    //   pointObj['lat'] = $('.pointLat'+i).val();
-    //   pointObj['lng'] = $('.pointLng'+i).val();
-    //   pointObj['address'] = $('.pointAddr'+i).val();
-    //   pointObj['desc'] = $('.in_text'+i).val();
-
-    //   data.locations.push(pointObj);
-    // }
     data.mapName = $('#mapTit').val();
-
-    console.log('map data from client', data);
 
     $.ajax({
         type: "POST",
