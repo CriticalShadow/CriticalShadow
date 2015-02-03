@@ -6,7 +6,7 @@ $(document).ready(function () {
     maxWidth: 100
   });
   var map;
-  var pointCounter = 0;
+  // var pointCounter = 0;
 
   // GLOBAL DATA OBJECT TO BE SENT TO SERVER
   var data = {
@@ -91,8 +91,8 @@ $(document).ready(function () {
         var longitude = event.latLng.lng();
         codeLatLng(latitude, longitude, function (address_data) {
         // note: marker is added in codeLatLng()
-          $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(address_data) +'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
-            '<textarea placeholder="Enter location description here" class="form-control inputSize2 in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+address_data+'\"+></input><input type=hidden class="hiddenLat pointLat' + pointCounter +'"value='+latitude+'></input><input type=hidden class="hiddenLng pointLng' + pointCounter++ +'"value='+longitude+'></input></div>'
+          $('<div class="onePoint"><input class="form-control inputSize in_name" value=\"'+ nameParse(address_data) +'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
+            '<textarea placeholder="Enter location description here" class="form-control inputSize2 in_text"></textarea><br><input type=hidden class="pointAddr"value=\"'+address_data+'\"+></input><input type=hidden class="hiddenLat pointLat"value='+latitude+'></input><input type=hidden class="hiddenLng pointLng"value='+longitude+'></input></div>'
           ).hide().appendTo('.div_container').fadeIn();
         });
     });
@@ -127,8 +127,8 @@ $(document).ready(function () {
         console.log(lattLng);
         setBounds();
 
-      $('<div class="onePoint"><input class="form-control inputSize in_name' + pointCounter +'" value=\"'+ nameParse(input.value)+'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
-        '<textarea placeholder="Enter location description here" class="inputSize2 form-control in_text' + pointCounter +'"></textarea><br><input type=hidden class="pointAddr' + pointCounter +'"value=\"'+input.value+'\"+></input><input type=hidden class="hiddenLat pointLat' + pointCounter +'"value='+place.geometry.location.lat()+'></input><input type=hidden class="hiddenLng pointLng' + pointCounter++ +'"value='+place.geometry.location.lng()+'></input></div>'
+      $('<div class="onePoint"><input class="form-control inputSize in_name" value=\"'+ nameParse(input.value)+'\"+></input><a href="#"><img class="xButton" src="css/painted-x.png"></a>'+
+        '<textarea placeholder="Enter location description here" class="inputSize2 form-control in_text"></textarea><br><input type=hidden class="pointAddr"value=\"'+input.value+'\"+></input><input type=hidden class="hiddenLat pointLat"value='+place.geometry.location.lat()+'></input><input type=hidden class="hiddenLng pointLng"value='+place.geometry.location.lng()+'></input></div>'
         ).hide().appendTo('.div_container').fadeIn();//note: pointCounter++ is so the next one with have +1 index.
 
         $('#pac-input').val(''); 
@@ -195,6 +195,25 @@ $(document).ready(function () {
   $('.pushToServer').click(function () {
     if(submitform()){
     var points_length = $('.onePoint').length;
+
+    $('.onePoint').each(function (point) {
+
+      console.log('point', point);
+      console.log('this', this);
+
+      var pointObj = {};
+      pointObj['name'] = $(this).children().filter($('.in_name')).val();
+      pointObj['lat'] = $('.pointLat'+i).val();
+      pointObj['lng'] = $('.pointLng'+i).val();
+      pointObj['address'] = $('.pointAddr'+i).val();
+      pointObj['desc'] = $('.in_text'+i).val();
+
+      data.locations.push(pointObj);
+    });
+
+
+
+
     for( var i = 0; i < points_length; i++ ){
       var pointObj = {};
       pointObj['name'] = $('.in_name'+i).val();
