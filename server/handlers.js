@@ -39,7 +39,7 @@ handlers.setUser = function (username) {
 };
 
 handlers.setMap = function (map) {
-  console.log('map being passed in to setMap', map);
+
   var name = map.mapName;
   var guid = map.Guid;
   var UserId = map.UserId;
@@ -256,7 +256,6 @@ handlers.getUserMaps = function (userId) {
     .complete(function(err, maps) {
       console.log('got all the maps for the user with the user id ' + userId);
       var count = 0;
-      console.log('maps', maps);
       if (maps.length === 0 || maps === undefined) { // if the user has not created any maps yet
         var data = {data: []};
         resolve(data);
@@ -264,7 +263,6 @@ handlers.getUserMaps = function (userId) {
         maps.forEach(function(map) {
           handlers.getMap(map.dataValues.guid)
           .then(function(results) {
-            console.log('results', results);
             allUserMaps.push(results);
             count++;
             if (count === maps.length) {
