@@ -179,6 +179,10 @@ p {
     width: 48%;
   }
 
+  .btnSize2 {
+    width: 100%;
+  }
+
   .inputSize {
     width: 90%;
     display: inline-block;
