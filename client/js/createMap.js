@@ -239,16 +239,16 @@ $(document).ready(function () {
   }
   });
 
-  $(document).ready(function () {
-  
-  //*****************RESET BUTTON*********************//
+  $(document).ready(function(){
+ 
+ //*****************RESET BUTTON*********************//
 
-    $('.resetMap').click(function () {
+ $('.resetMap').click(function () {
       var data = {
         mapName: null,
         locations: []
       };
-      $('.onePoint').fadeOut();
+      $('.onePoint').fadeOut(500, function() { $('.onePoint').remove(); });
       for( var key in markersObj ){
         markersObj[key].setMap(null);
       }
@@ -256,14 +256,14 @@ $(document).ready(function () {
       initialize();
     });
 
-  //*****************X BUTTON*********************//
+ //*****************X BUTTON*********************//
 
     $(document).on('click', 'img.xButton', function () {
       $(this).closest('.onePoint').fadeOut(500, function() { $(this).closest('.onePoint').remove(); });
       var lattLng = $(this).closest('.onePoint').find('input.hiddenLat').val() + ', '+ $(this).closest('.onePoint').find('input.hiddenLng').val();
       markersObj[lattLng].setMap(null);
     });
-  });
+ });
 
 
 
