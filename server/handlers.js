@@ -39,6 +39,7 @@ handlers.setUser = function (username) {
 };
 
 handlers.setMap = function (map) {
+  console.log('map being passed in to setMap', map);
   var name = map.mapName;
   var guid = map.Guid;
   var UserId = map.UserId;

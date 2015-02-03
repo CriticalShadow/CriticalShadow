@@ -207,6 +207,8 @@ $(document).ready(function () {
     }
     data.mapName = $('#mapTit').val();
 
+    console.log('map data from client', data);
+
     $.ajax({
         type: "POST",
         url: '/createMaps',
