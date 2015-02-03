@@ -203,27 +203,24 @@ $(document).ready(function () {
 
       var pointObj = {};
       pointObj['name'] = $(this).children().filter($('.in_name')).val();
-      pointObj['lat'] = $('.pointLat'+i).val();
-      pointObj['lng'] = $('.pointLng'+i).val();
-      pointObj['address'] = $('.pointAddr'+i).val();
-      pointObj['desc'] = $('.in_text'+i).val();
+      pointObj['lat'] = $(this).children().filter($('.pointLat')).val();
+      pointObj['lng'] = $(this).children().filter($('.pointLng')).val();
+      pointObj['address'] = $(this).children().filter($('.pointAddr')).val();
+      pointObj['desc'] = $(this).children().filter($('.in_text')).val();
 
       data.locations.push(pointObj);
     });
 
+    // for( var i = 0; i < points_length; i++ ){
+    //   var pointObj = {};
+    //   pointObj['name'] = $('.in_name'+i).val();
+    //   pointObj['lat'] = $('.pointLat'+i).val();
+    //   pointObj['lng'] = $('.pointLng'+i).val();
+    //   pointObj['address'] = $('.pointAddr'+i).val();
+    //   pointObj['desc'] = $('.in_text'+i).val();
 
-
-
-    for( var i = 0; i < points_length; i++ ){
-      var pointObj = {};
-      pointObj['name'] = $('.in_name'+i).val();
-      pointObj['lat'] = $('.pointLat'+i).val();
-      pointObj['lng'] = $('.pointLng'+i).val();
-      pointObj['address'] = $('.pointAddr'+i).val();
-      pointObj['desc'] = $('.in_text'+i).val();
-
-      data.locations.push(pointObj);
-    }
+    //   data.locations.push(pointObj);
+    // }
     data.mapName = $('#mapTit').val();
 
     console.log('map data from client', data);
