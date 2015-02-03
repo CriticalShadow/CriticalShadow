@@ -46,32 +46,30 @@ handlers.setMap = function (map) {
   var mapResults;
   var locationsResults = [];
 
-  console.log(map);
-
-  // create map
+  // see if the map already exists
   db.Map.find({ where: {
     guid: guid
   }})
   .complete(function (err, results) {
     if (err) {
-      // console.log('error searching for map guid')
+      console.log('error searching for map guid');
       return err;
-    } else if (results === null) { // if map guid does not exist
+    } else if (results === null) { 
+      // if map guid does not exist, create the map
       db.Map.create({
         name: name, 
         guid: guid,
         UserId: UserId
       })
       .complete(function (err, mapdata) {
-        // console.log('mapdata', mapdata);
         if (err) {
           console.log('Error creating map: ', err);
         } else {
           mapResults = mapdata;
-          // loop through the location objects and create each location
+          // loop through the locations array and create each location
           for (var i = 0; i < locations.length; i++) {
-            // check to see if location exists
             (function(index) {
+              // check to see if location exists
               db.Location.find({ where: {
                 name: locations[index].name,
                 latitude: locations[index].lat,
@@ -79,9 +77,10 @@ handlers.setMap = function (map) {
               }})
               .complete(function (err, location) {
                 if (err) { 
-                  // console.log('error: ', err)
+                  console.log('error: ', err);
                   return err;
-                } else if (location === null) { // if location does not exist we create the location
+                } else if (location === null) { 
+                  // if location does not exist we create the location in the locations table
                   db.Location.create({
                     name: locations[index].name,
                     latitude: locations[index].lat,
@@ -94,11 +93,10 @@ handlers.setMap = function (map) {
                     })
                     .complete(function (err, maplocdata) {
                       if (err) {
-                        console.log(err);
+                        console.log('error creating map location', err);
                         return err;
                       } else {
-                        console.log('MapLocationdata', maplocdata);
-                        // store the contents for the specific map location
+                        // store the content for the specific map location in the MapLocationContents tables
                         db.MapLocationContent.create({
                           title: locations[index].name,  // for now, this will be the same as the name stored in the locations table, however, eventually the locations stored in the locations table should be separate from each map location
                           description: locations[index].desc,
@@ -107,7 +105,7 @@ handlers.setMap = function (map) {
                           mapOrder: index
                         }).complete(function (err, maplocationcontent) {
                           if (err) {
-                            console.log(err);
+                            console.log('error creating map location content', err);
                             return err;
                           }
                         })
@@ -116,14 +114,17 @@ handlers.setMap = function (map) {
                   });
                 } else { // if the location already exists
                   console.log('location ' + locations[index].name + ' already exists');
-                  // here we are skipping the creation of the location because it already exists in the db
+                  // here we are skipping the creation of the location in the locations table because it already exists
+                  // *NB* This is the key to solving the bug where the description of the map is the same for all locations
+                  // The location id is looking to the location stored in the locations table, but it should be 
+                  // an id specific to the maplocationcontent record for that map location. 
                   db.MapLocation.create({
                       MapId: mapResults.dataValues.id,
                       LocationId: location.dataValues.id
                     })
                     .complete(function (err, maplocdata) {
                       if (err) {
-                        console.log(err);
+                        console.log('error creating map location', err);
                         return err;
                       } else {
                         console.log('MapLocationdata', maplocdata);
@@ -152,8 +153,10 @@ handlers.setMap = function (map) {
   })
 };
 
+// this function returns the entire map object for a specified map guid
 handlers.getMap = function (guid) {
 
+  // used to sort the order of the locations displayed for a map
   var compare = function (a,b) {
     if (a.last_nom < b.last_nom)
        return -1;
@@ -192,7 +195,6 @@ handlers.getMap = function (guid) {
         } else {
           for (var i = 0; i < maplocations.length; i++) {
             (function (index) {
-              console.log('maplocations dataValues', maplocations[index].dataValues);
               wholeMap.locations.push(maplocations[index].dataValues);
               db.Location.find({
                 where: {
