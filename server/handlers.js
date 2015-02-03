@@ -220,7 +220,7 @@ handlers.getMap = function (guid) {
                     // set the properties on the wholeMap object
                     wholeMap.locations[index].title = locationcontent.dataValues.title;
                     wholeMap.locations[index].icon_url = locationcontent.dataValues.icon_url;
-                    wholeMap.locations[index].desc = locationcontent.dataValues.description.toString();
+                    wholeMap.locations[index].desc = locationcontent.dataValues.description.toString() ? locationcontent.dataValues.description.toString() : "";
                     wholeMap.locations[index].address = locationcontent.dataValues.address;
                     wholeMap.locations[index].mapOrder = locationcontent.dataValues.mapOrder;
                     if (index === maplocations.length - 1) { 
